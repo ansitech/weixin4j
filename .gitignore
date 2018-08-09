@@ -1,0 +1,38 @@
+*.s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+### Default ###
+*.log
+.mvn/
+mvnw.cmd
+mvnw
+target/
+data/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+nbactions.xml
+nb-configuration.xml
