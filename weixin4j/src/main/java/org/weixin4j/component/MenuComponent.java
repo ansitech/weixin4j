@@ -29,7 +29,7 @@ import org.weixin4j.http.Response;
 
 /**
  * 自定义菜单组件
- * 
+ *
  * @author 杨启盛<qsyang@ansitech.com>
  * @since 0.1.0
  */

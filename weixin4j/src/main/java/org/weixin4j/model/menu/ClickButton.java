@@ -32,15 +32,8 @@ public class ClickButton extends SingleButton {
      */
     private String key;
 
-    public ClickButton() {
-    }
-
-    public ClickButton(String key) {
-        this.key = key;
-    }
-
     public ClickButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 
@@ -51,7 +44,9 @@ public class ClickButton extends SingleButton {
     /**
      * 获取 菜单KEY值
      *
-     * <p>click类型必须.菜单KEY值，用于消息接口推送，不超过128字节</p>
+     * <p>
+     * click类型必须.菜单KEY值， 用于消息接口推送，不超过128字节
+     * </p>
      *
      * @return 菜单KEY值
      */
@@ -62,7 +57,9 @@ public class ClickButton extends SingleButton {
     /**
      * 设置 菜单KEY值
      *
-     * <p>click类型必须.菜单KEY值，用于消息接口推送，不超过128字节</p>
+     * <p>
+     * click类型必须.菜单KEY值，用于消息接口推送，不超过128字节
+     * </p>
      *
      * @param key 菜单KEY值
      */

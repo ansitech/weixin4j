@@ -30,17 +30,14 @@ import java.util.List;
  */
 public class SingleButton extends BaseButton {
 
-    public SingleButton() {
-    }
-
-    public SingleButton(String name) {
-        this.setName(name);
-    }
-
     /**
      * 子菜单(此菜单需要手动添加，所以get和set方法能喝微信返回的json一致)
      */
     private List<SingleButton> subButton;
+
+    public SingleButton(String name) {
+        super(name);
+    }
 
     /**
      * 设置 子菜单

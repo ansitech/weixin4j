@@ -32,11 +32,8 @@ public class MediaIdButton extends SingleButton {
      */
     private String mediaId;
 
-    public MediaIdButton() {
-    }
-
     public MediaIdButton(String name, String mediaId) {
-        this.setName(name);
+        super(name);
         this.mediaId = mediaId;
     }
 

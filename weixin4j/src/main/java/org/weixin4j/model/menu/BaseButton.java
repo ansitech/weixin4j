@@ -25,12 +25,21 @@ package org.weixin4j.model.menu;
  * @author 杨启盛<qsyang@ansitech.com>
  * @since 0.0.1
  */
-public abstract class BaseButton {
+public class BaseButton {
 
     /**
      * 菜单标题，不超过16个字节，子菜单不超过40个字节
      */
-    private String name;
+    private final String name;
+
+    /**
+     * 基础按钮
+     *
+     * @param name 菜单标题
+     */
+    public BaseButton(String name) {
+        this.name = name;
+    }
 
     /**
      * 获取 菜单标题
@@ -39,14 +48,5 @@ public abstract class BaseButton {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * 设置 菜单标题
-     *
-     * @param name 菜单标题
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 }

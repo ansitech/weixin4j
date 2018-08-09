@@ -20,54 +20,61 @@
 package org.weixin4j.model.menu;
 
 /**
- * 跳转URL
+ * 打开小程序
  *
  * @author 杨启盛<qsyang@ansitech.com>
- * @since 0.0.1
+ * @since 0.1.2
  */
-public class ViewButton extends SingleButton {
+public class MiniprogramButton extends SingleButton {
 
     /**
-     * view类型必须.网页链接，用户点击菜单可打开链接，不超过256字节
+     * 小程序的appid（仅认证公众号可配置）
+     */
+    private String appid;
+    /**
+     * 小程序的页面路径
+     */
+    private String pagepath;
+    /**
+     * 网页 链接，用户点击菜单可打开链接，不超过1024字节。
+     *
+     * 不支持小程序的老版本客户端将打开本url。
      */
     private String url;
 
-    public ViewButton(String name) {
+    public MiniprogramButton(String name) {
         super(name);
     }
 
-    public ViewButton(String name, String url) {
+    public MiniprogramButton(String name, String appid, String pagepath, String url) {
         super(name);
+        this.appid = appid;
+        this.pagepath = pagepath;
         this.url = url;
     }
 
-    public String getType() {
-        return ButtonType.View.toString();
+    public String getAppid() {
+        return appid;
     }
 
-    /**
-     * 获取 网页链接
-     *
-     * <p>
-     * view类型必须.网页链接，用户点击菜单可打开链接，不超过256字节
-     * </p>
-     *
-     * @return 网页链接
-     */
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getPagepath() {
+        return pagepath;
+    }
+
+    public void setPagepath(String pagepath) {
+        this.pagepath = pagepath;
+    }
+
     public String getUrl() {
         return url;
     }
 
-    /**
-     * 设置 网页链接
-     *
-     * <p>
-     * view类型必须.网页链接，用户点击菜单可打开链接，不超过256字节
-     * </p>
-     *
-     * @param url 网页链接
-     */
     public void setUrl(String url) {
         this.url = url;
     }
+    
 }

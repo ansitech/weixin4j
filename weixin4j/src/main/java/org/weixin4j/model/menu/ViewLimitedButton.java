@@ -32,11 +32,8 @@ public class ViewLimitedButton extends SingleButton {
      */
     private String mediaId;
 
-    public ViewLimitedButton() {
-    }
-
     public ViewLimitedButton(String name, String mediaId) {
-        this.setName(name);
+        super(name);
         this.mediaId = mediaId;
     }
 
@@ -56,7 +53,7 @@ public class ViewLimitedButton extends SingleButton {
     /**
      * 设置 调用新增永久素材接口返回的合法media_id
      *
-     * @param url 调用新增永久素材接口返回的合法media_id
+     * @param mediaId 调用新增永久素材接口返回的合法media_id
      */
     public void setMedia_Id(String mediaId) {
         this.mediaId = mediaId;

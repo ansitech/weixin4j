@@ -32,15 +32,8 @@ public class PicPhotoOrAlbumButton extends SingleButton {
      */
     private String key;
 
-    public PicPhotoOrAlbumButton() {
-    }
-
-    public PicPhotoOrAlbumButton(String key) {
-        this.key = key;
-    }
-
     public PicPhotoOrAlbumButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 

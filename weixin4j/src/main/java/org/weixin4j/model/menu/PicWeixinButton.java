@@ -32,15 +32,8 @@ public class PicWeixinButton extends SingleButton {
      */
     private String key;
 
-    public PicWeixinButton() {
-    }
-
-    public PicWeixinButton(String key) {
-        this.key = key;
-    }
-
     public PicWeixinButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 

@@ -32,15 +32,8 @@ public class ScancodePushButton extends SingleButton {
      */
     private String key;
 
-    public ScancodePushButton() {
-    }
-
-    public ScancodePushButton(String key) {
-        this.key = key;
-    }
-
     public ScancodePushButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 

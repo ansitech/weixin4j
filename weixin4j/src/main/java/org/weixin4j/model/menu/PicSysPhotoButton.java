@@ -32,15 +32,8 @@ public class PicSysPhotoButton extends SingleButton {
      */
     private String key;
 
-    public PicSysPhotoButton() {
-    }
-
-    public PicSysPhotoButton(String key) {
-        this.key = key;
-    }
-
     public PicSysPhotoButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 

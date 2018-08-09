@@ -62,8 +62,7 @@ public class Menu {
         //判断对象type
         if (type == null) {
             //有子的自定义菜单
-            singleButton = new SingleButton();
-            singleButton.setName(jsonButton.getString("name"));
+            singleButton = new SingleButton(jsonButton.getString("name"));
         } else if (type.equals(ButtonType.Click.toString())) {
             //转成点击按钮
             singleButton = new ClickButton(jsonButton.getString("name"), jsonButton.getString("key"));

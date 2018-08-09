@@ -32,15 +32,8 @@ public class ScancodeWaitMsgButton extends SingleButton {
      */
     private String key;
 
-    public ScancodeWaitMsgButton() {
-    }
-
-    public ScancodeWaitMsgButton(String key) {
-        this.key = key;
-    }
-
     public ScancodeWaitMsgButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 

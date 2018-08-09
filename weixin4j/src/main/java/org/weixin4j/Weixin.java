@@ -53,13 +53,9 @@ import org.weixin4j.model.js.TicketType;
 public class Weixin extends WeixinSupport implements java.io.Serializable {
 
     /**
-     * 解决多线程并发重复获取token问题
-     */
-    private volatile Token _token;
-    /**
      * 同步锁
      */
-    private final byte[] lock = new byte[0];
+    private final static byte[] LOCK = new byte[0];
     /**
      * 公众号开发者ID
      */
@@ -106,13 +102,12 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
      * @since 0.1.0
      */
     public Token getToken() throws WeixinException {
-        _token = tokenLoader.get();
-        Token token = this._token;
+        Token token = tokenLoader.get();
         if (token == null) {
-            synchronized (lock) {
-                token = this._token;
+            synchronized (LOCK) {
+                token = tokenLoader.get();
                 if (token == null) {
-                    this._token = token = base().token();
+                    token = base().token();
                     tokenLoader.refresh(token);
                 }
             }
@@ -129,8 +124,13 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
     public Ticket getJsApiTicket() throws WeixinException {
         Ticket ticket = ticketLoader.get(TicketType.JSAPI);
         if (ticket == null) {
-            ticket = js().getJsApiTicket();
-            ticketLoader.refresh(ticket);
+            synchronized (LOCK) {
+                ticket = ticketLoader.get(TicketType.JSAPI);
+                if (ticket == null) {
+                    ticket = js().getJsApiTicket();
+                    ticketLoader.refresh(ticket);
+                }
+            }
         }
         return ticket;
     }

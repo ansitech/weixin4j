@@ -32,15 +32,8 @@ public class LocationSelectButton extends SingleButton {
      */
     private String key;
 
-    public LocationSelectButton() {
-    }
-
-    public LocationSelectButton(String key) {
-        this.key = key;
-    }
-
     public LocationSelectButton(String name, String key) {
-        this.setName(name);
+        super(name);
         this.key = key;
     }
 
