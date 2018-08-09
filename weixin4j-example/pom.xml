@@ -9,7 +9,7 @@
         <dependency>
             <groupId>org.weixin4j</groupId>
             <artifactId>weixin4j</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
     </dependencies>
     <properties>
