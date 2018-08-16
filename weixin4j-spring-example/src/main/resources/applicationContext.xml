@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:util="http://www.springframework.org/schema/util" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd    
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd    
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd"> 
+    
+    <!-- 设置微信公众号配置(可选)-->
+    <bean id="weixinConfig" class="org.weixin4j.WeixinConfig">
+        <property name="appid" value="wx7720f3daa7baaca1" />
+        <property name="secret" value="0172333bbe1020869241228a906bf2fe" />
+        <property name="originalid" value="gh_fdb5ee7e53b9" />
+        <property name="encodingtype" value="0" />
+        <property name="encodingaeskey" value="0123456789abcedfghijklmnopqrstuvwxyzZXCVBNM" />
+        <property name="oauthUrl" value="www.weixin4j.org/wx/" />
+    </bean>
+    
+    <!-- 设置微信支付配置(可选)-->
+    <bean id="weixinPayConfig" class="org.weixin4j.WeixinPayConfig">
+        <property name="partnerId" value="1987545104522" />
+        <property name="partnerKey" value="0123456789abcedfghijklmnopqrstuvwxyzZXCVBNM" />
+        <property name="notifyUrl" value="https://www.weixin4j.org/wx/pay/notify" />
+        <property name="certPath" value="/opt/cert/1987545104522.cert" />
+        <property name="certSecret" value="1987545104522" />
+    </bean>
+    
+    <!-- 自定义Tokenloader加载器 -->
+    <bean id="myTokenLoader" class="com.ansitech.example.MyTokenLoader"></bean>
+    <!-- 自定义Ticketloader加载器 -->
+    <bean id="myTicketLoader" class="com.ansitech.example.MyTicketLoader"></bean>
+    
+    <!-- 定义微信工厂Bean -->
+    <bean id="weixinFactory" class="org.weixin4j.spring.WeixinFactoryBean">
+        <property name="weixinConfig" ref="weixinConfig" />
+        <property name="weixinPayConfig" ref="weixinPayConfig" />
+        <property name="tokenLoader" ref="myTokenLoader" />
+        <property name="ticketLoader" ref="myTicketLoader" />
+    </bean>
+    
+    <!-- 初始化微信模板Bean -->
+    <bean id="weixinTemplate" class="org.weixin4j.spring.WeixinTemplate">
+        <constructor-arg index="0" ref="weixinFactory" ></constructor-arg>
+    </bean>
+    
+</beans>
