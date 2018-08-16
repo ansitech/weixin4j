@@ -65,6 +65,18 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
      */
     private final String secret;
     /**
+     * 公众号配置
+     *
+     * @since 0.1.3
+     */
+    private final WeixinConfig weixinConfig;
+    /**
+     * 微信支付配置
+     *
+     * @since 0.1.3
+     */
+    private final WeixinPayConfig weixinPayConfig;
+    /**
      * AccessToken加载器
      */
     protected ITokenLoader tokenLoader = new DefaultTokenLoader();
@@ -77,13 +89,80 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
      */
     private final Map<String, AbstractComponent> components = new HashMap<String, AbstractComponent>();
 
+    /**
+     * 单公众号，并且只支持一个公众号方式
+     */
     public Weixin() {
         this(Configuration.getOAuthAppId(), Configuration.getOAuthSecret());
     }
 
+    /**
+     * 多公众号，同一个环境中使用方式
+     *
+     * @param appId 公众号开发者AppId
+     * @param secret 公众号开发者秘钥
+     */
     public Weixin(String appId, String secret) {
         this.appId = appId;
         this.secret = secret;
+        weixinConfig = new WeixinConfig();
+        weixinConfig.setAppid(appId);
+        weixinConfig.setSecret(secret);
+        weixinConfig.setOriginalid(Configuration.getProperty("weixin4j.oauth.originalid"));
+        weixinConfig.setEncodingtype(Configuration.getIntProperty("weixin4j.oauth.encodingtype"));
+        weixinConfig.setEncodingaeskey(Configuration.getProperty("weixin4j.oauth.encodingaeskey"));
+        weixinConfig.setOauthUrl(Configuration.getProperty("weixin4j.oauth.url"));
+        weixinConfig.setApiDomain(Configuration.getProperty("weixin4j.api.domain"));
+        weixinPayConfig = new WeixinPayConfig();
+        weixinPayConfig.setPartnerId(Configuration.getProperty("weixin4j.pay.partner.id"));
+        weixinPayConfig.setPartnerKey(Configuration.getProperty("weixin4j.pay.partner.key"));
+        weixinPayConfig.setNotifyUrl(Configuration.getProperty("weixin4j.pay.notify_url"));
+        weixinPayConfig.setCertPath(Configuration.getProperty("weixin4j.http.cert.path"));
+        weixinPayConfig.setCertSecret(Configuration.getProperty("weixin4j.http.cert.secret"));
+    }
+
+    /**
+     * 外部配置注入方式，更灵活
+     *
+     * @param weixinConfig 微信公众号配置
+     * @since 0.1.3
+     */
+    public Weixin(WeixinConfig weixinConfig) {
+        this(weixinConfig, null);
+    }
+
+    /**
+     * 外部配置注入方式（带微信支付），更灵活
+     *
+     * @param weixinPayConfig 微信支付配置
+     * @since 0.1.3
+     */
+    public Weixin(WeixinPayConfig weixinPayConfig) {
+        this.appId = Configuration.getOAuthAppId();
+        this.secret = Configuration.getOAuthSecret();
+        weixinConfig = new WeixinConfig();
+        weixinConfig.setAppid(Configuration.getOAuthAppId());
+        weixinConfig.setSecret(Configuration.getOAuthSecret());
+        weixinConfig.setOriginalid(Configuration.getProperty("weixin4j.oauth.originalid"));
+        weixinConfig.setEncodingtype(Configuration.getIntProperty("weixin4j.oauth.encodingtype"));
+        weixinConfig.setEncodingaeskey(Configuration.getProperty("weixin4j.oauth.encodingaeskey"));
+        weixinConfig.setOauthUrl(Configuration.getProperty("weixin4j.oauth.url"));
+        weixinConfig.setApiDomain(Configuration.getProperty("weixin4j.api.domain"));
+        this.weixinPayConfig = weixinPayConfig;
+    }
+
+    /**
+     * 外部配置注入方式（带微信支付），更灵活
+     *
+     * @param weixinConfig 微信公众号配置
+     * @param weixinPayConfig 微信支付配置
+     * @since 0.1.3
+     */
+    public Weixin(WeixinConfig weixinConfig, WeixinPayConfig weixinPayConfig) {
+        this.appId = weixinConfig.getAppid();
+        this.secret = weixinConfig.getSecret();
+        this.weixinConfig = weixinConfig;
+        this.weixinPayConfig = weixinPayConfig;
     }
 
     public String getAppId() {
@@ -284,5 +363,25 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
         QrcodeComponent component = new QrcodeComponent(this);
         components.put(key, component);
         return component;
+    }
+
+    /**
+     * 获取微信配置对象
+     *
+     * @return 微信配置对象
+     * @since 0.1.3
+     */
+    public WeixinConfig getWeixinConfig() {
+        return weixinConfig;
+    }
+
+    /**
+     * 获取微信支付配置对象
+     *
+     * @return 微信支付配置对象
+     * @since 0.1.3
+     */
+    public WeixinPayConfig getWeixinPayConfig() {
+        return weixinPayConfig;
     }
 }

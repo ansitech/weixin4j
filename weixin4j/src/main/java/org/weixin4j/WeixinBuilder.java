@@ -19,6 +19,8 @@
  */
 package org.weixin4j;
 
+import org.weixin4j.factory.WeixinFactory;
+import org.weixin4j.factory.defaults.DefaultWeixinFactory;
 import org.weixin4j.loader.ITicketLoader;
 import org.weixin4j.loader.ITokenLoader;
 
@@ -31,6 +33,8 @@ import org.weixin4j.loader.ITokenLoader;
 public final class WeixinBuilder {
 
     private Weixin weixin;
+    private ITokenLoader tokenLoader;
+    private ITicketLoader ticketLoader;
 
     /**
      * 获取一个新的微信构建器
@@ -57,6 +61,46 @@ public final class WeixinBuilder {
     }
 
     /**
+     * 外部自定义微信公众号配置
+     *
+     * @param weixinConfig 微信公众号配置对象
+     * @return 自身引用对象
+     * @since 0.1.3
+     */
+    public static WeixinBuilder newInstance(WeixinConfig weixinConfig) {
+        WeixinBuilder builder = new WeixinBuilder();
+        builder.weixin = new Weixin(weixinConfig);
+        return builder;
+    }
+
+    /**
+     * 外部自定义微信支付配置
+     *
+     * @param weixinPayConfig 微信支付配置对象
+     * @return 自身引用对象
+     * @since 0.1.3
+     */
+    public static WeixinBuilder newInstance(WeixinPayConfig weixinPayConfig) {
+        WeixinBuilder builder = new WeixinBuilder();
+        builder.weixin = new Weixin(weixinPayConfig);
+        return builder;
+    }
+
+    /**
+     * 外部自定义微信支付配置
+     *
+     * @param weixinConfig 微信公众号配置对象
+     * @param weixinPayConfig 微信支付配置对象
+     * @return 自身引用对象
+     * @since 0.1.3
+     */
+    public static WeixinBuilder newInstance(WeixinConfig weixinConfig, WeixinPayConfig weixinPayConfig) {
+        WeixinBuilder builder = new WeixinBuilder();
+        builder.weixin = new Weixin(weixinConfig, weixinPayConfig);
+        return builder;
+    }
+
+    /**
      * 配置access_token加载器
      *
      * @param tokenLoader token加载器
@@ -66,7 +110,7 @@ public final class WeixinBuilder {
         if (tokenLoader == null) {
             throw new IllegalStateException("tokenLoader can't be null");
         }
-        weixin.tokenLoader = tokenLoader;
+        this.tokenLoader = tokenLoader;
         return this;
     }
 
@@ -80,7 +124,7 @@ public final class WeixinBuilder {
         if (ticketLoader == null) {
             throw new IllegalStateException("ticketLoader can't be null");
         }
-        weixin.ticketLoader = ticketLoader;
+        this.ticketLoader = ticketLoader;
         return this;
     }
 
@@ -90,6 +134,24 @@ public final class WeixinBuilder {
      * @return 微信对象
      */
     public Weixin build() {
+        if (tokenLoader != null) {
+            weixin.tokenLoader = this.tokenLoader;
+        }
+        if (this.ticketLoader != null) {
+            weixin.ticketLoader = this.ticketLoader;
+        }
         return weixin;
+    }
+
+    /**
+     * 返回微信工厂对象
+     *
+     * @return 微信工厂对象
+     * @since 0.1.3
+     */
+    public WeixinFactory buildWeixinFactory() {
+        DefaultWeixinFactory weixinFactory = new DefaultWeixinFactory();
+        weixinFactory.setWeixin(build());
+        return weixinFactory;
     }
 }

@@ -61,11 +61,11 @@ import javax.net.ssl.TrustManager;
 public class HttpsClient implements java.io.Serializable {
 
     private static final int OK = 200;  // OK: Success!
-    private static final int ConnectionTimeout = Configuration.getConnectionTimeout();
-    private static final int ReadTimeout = Configuration.getReadTimeout();
+    private static final int CONNECTION_TIMEOUT = Configuration.getConnectionTimeout();
+    private static final int READ_TIMEOUT = Configuration.getReadTimeout();
     private static final String DEFAULT_CHARSET = "UTF-8";
-    private static final String _GET = "GET";
-    private static final String _POST = "POST";
+    private static final String GET = "GET";
+    private static final String POST = "POST";
 
     public HttpsClient() {
     }
@@ -87,7 +87,7 @@ public class HttpsClient implements java.io.Serializable {
             System.out.println("URL POST 数据：" + jsonString);
         }
         //提交数据
-        return httpsRequest(url, _POST, jsonString, false, null, null, null);
+        return httpsRequest(url, POST, jsonString, false, null, null, null);
     }
 
     /**
@@ -100,7 +100,7 @@ public class HttpsClient implements java.io.Serializable {
      * @throws WeixinException
      */
     public Response get(String url) throws WeixinException {
-        return httpsRequest(url, _GET, null, false, null, null, null);
+        return httpsRequest(url, GET, null, false, null, null, null);
     }
 
     /**
@@ -112,23 +112,7 @@ public class HttpsClient implements java.io.Serializable {
      * @throws WeixinException
      */
     public Response postXml(String url, String xml) throws WeixinException {
-        return httpsRequest(url, _POST, xml, false, null, null, null);
-    }
-
-    /**
-     * Post XML格式数据
-     *
-     * @param url 提交地址
-     * @param xml XML数据
-     * @param needCert 需要证书
-     * @return 输出流对象
-     * @throws WeixinException
-     */
-    public Response postXml(String url, String xml, boolean needCert) throws WeixinException {
-        String partnerId = Configuration.getProperty("weixin4j.pay.partner.id");
-        String certPath = Configuration.getProperty("weixin4j.http.cert.path");
-        String certSecret = Configuration.getProperty("weixin4j.http.cert.secret");
-        return httpsRequest(url, _POST, xml, needCert, partnerId, certPath, certSecret);
+        return httpsRequest(url, POST, xml, false, null, null, null);
     }
 
     /**
@@ -143,7 +127,7 @@ public class HttpsClient implements java.io.Serializable {
      * @throws WeixinException
      */
     public Response postXml(String url, String xml, String partnerId, String certPath, String certSecret) throws WeixinException {
-        return httpsRequest(url, _POST, xml, true, partnerId, certPath, certSecret);
+        return httpsRequest(url, POST, xml, true, partnerId, certPath, certSecret);
     }
 
     /**
@@ -168,7 +152,7 @@ public class HttpsClient implements java.io.Serializable {
                 //设置Header信息，包括https证书
                 setHttpsHeader(https, method, needCert, partnerId, certPath, certSecret);
                 //判断是否需要提交数据
-                if (method.equals(_POST) && null != postData) {
+                if (method.equals(POST) && null != postData) {
                     //讲参数转换为字节提交
                     byte[] bytes = postData.getBytes(DEFAULT_CHARSET);
                     //设置头信息
@@ -271,15 +255,15 @@ public class HttpsClient implements java.io.Serializable {
         //设置请求方式
         httpsUrlConnection.setRequestMethod(method);
         //设置连接超时时间
-        if (ConnectionTimeout > 0) {
-            httpsUrlConnection.setConnectTimeout(ConnectionTimeout);
+        if (CONNECTION_TIMEOUT > 0) {
+            httpsUrlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
         } else {
             //默认10秒超时
             httpsUrlConnection.setConnectTimeout(10000);
         }
         //设置请求超时
-        if (ReadTimeout > 0) {
-            httpsUrlConnection.setReadTimeout(ReadTimeout);
+        if (READ_TIMEOUT > 0) {
+            httpsUrlConnection.setReadTimeout(READ_TIMEOUT);
         } else {
             //默认10秒超时
             httpsUrlConnection.setReadTimeout(10000);
@@ -305,7 +289,7 @@ public class HttpsClient implements java.io.Serializable {
             //创建https请求连接
             https = getHttpsURLConnection(url);
             //设置header和ssl证书
-            setHttpsHeader(https, _POST, false, null, null, null);
+            setHttpsHeader(https, POST, false, null, null, null);
             //不缓存
             https.setUseCaches(false);
             //保持连接
@@ -398,7 +382,7 @@ public class HttpsClient implements java.io.Serializable {
             //创建https请求连接
             https = getHttpsURLConnection(url);
             //设置header和ssl证书
-            setHttpsHeader(https, _POST, false, null, null, null);
+            setHttpsHeader(https, POST, false, null, null, null);
             //不缓存
             https.setUseCaches(false);
             //保持连接

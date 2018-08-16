@@ -23,7 +23,6 @@ import java.io.StringReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import org.apache.commons.lang.StringUtils;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
 import org.weixin4j.WeixinException;
@@ -34,7 +33,7 @@ import org.weixin4j.model.redpack.SendRedPackResult;
 
 /**
  * 红包组件
- * 
+ *
  * @author 杨启盛<qsyang@ansitech.com>
  * @since 0.1.0
  */
@@ -55,7 +54,10 @@ public class RedpackComponent extends AbstractComponent {
      * @throws org.weixin4j.WeixinException
      */
     public SendRedPackResult sendRedPack(SendRedPack sendRedPack) throws WeixinException {
-        return sendRedPack(sendRedPack, null, null, null);
+        String partnerId = this.weixin.getWeixinPayConfig().getPartnerId();
+        String certPath = this.weixin.getWeixinPayConfig().getCertPath();
+        String certSecret = this.weixin.getWeixinPayConfig().getCertSecret();
+        return sendRedPack(sendRedPack, partnerId, certPath, certSecret);
     }
 
     /**
@@ -77,12 +79,7 @@ public class RedpackComponent extends AbstractComponent {
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //提交xml格式数据
-        Response res;
-        if (StringUtils.isEmpty(partnerId) || StringUtils.isEmpty(certPath) || StringUtils.isEmpty(certSecret)) {
-            res = http.postXml("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack", xmlPost, true);
-        } else {
-            res = http.postXml("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack", xmlPost, partnerId, certPath, certSecret);
-        }
+        Response res = http.postXml("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack", xmlPost, partnerId, certPath, certSecret);
         //获取微信平台下单接口返回数据
         String xmlResult = res.asString();
         try {

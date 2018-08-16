@@ -41,6 +41,28 @@ import org.weixin4j.util.XStreamFactory;
  */
 public class DefaultMessageHandler implements IMessageHandler {
 
+    private final IEventMessageHandler eventMsgHandler;
+    private final INormalMessageHandler normalMsgHandler;
+
+    public DefaultMessageHandler() {
+        //获取普通消息处理工具类
+        normalMsgHandler = HandlerFactory.getNormalMessageHandler();
+        //获取消息处理工具类
+        eventMsgHandler = HandlerFactory.getEventMessageHandler();
+    }
+
+    /**
+     * 带参构造，外部传入消息处理类
+     *
+     * @param normalMsgHandler 普通消息处理类
+     * @param eventMsgHandler 事件消息处理类
+     * @since 0.1.3
+     */
+    public DefaultMessageHandler(INormalMessageHandler normalMsgHandler, IEventMessageHandler eventMsgHandler) {
+        this.normalMsgHandler = normalMsgHandler;
+        this.eventMsgHandler = eventMsgHandler;
+    }
+
     @Override
     public String invoke(ServletInputStream inputStream) throws WeixinException {
         try {
@@ -73,8 +95,6 @@ public class DefaultMessageHandler implements IMessageHandler {
             if (Configuration.isDebug()) {
                 System.out.println("POST的消息类型:[" + msgType + "]");
             }
-            //获取普通消息处理工具类
-            INormalMessageHandler normalMsgHandler = HandlerFactory.getNormalMessageHandler();
             if (msgType.equals(MsgType.Text.toString())) {
                 //处理文本消息
                 outputMsg = normalMsgHandler.textTypeMsg(inputMsg.toTextInputMessage());
@@ -99,8 +119,6 @@ public class DefaultMessageHandler implements IMessageHandler {
             } else if (msgType.equals(MsgType.Event.toString())) {
                 //获取事件类型
                 String event = inputMsg.getEvent();
-                //获取消息处理工具类
-                IEventMessageHandler eventMsgHandler = HandlerFactory.getEventMessageHandler();
                 //自定义菜单事件
                 if (event.equals(EventType.Click.toString())) {
                     //点击菜单拉取消息时的事件推送
