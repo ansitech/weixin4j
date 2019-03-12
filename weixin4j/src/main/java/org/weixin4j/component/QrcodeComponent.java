@@ -41,7 +41,7 @@ import org.weixin4j.model.qrcode.QrcodeType;
 /**
  * 生成带参数的二维码
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class QrcodeComponent extends AbstractComponent {
@@ -57,7 +57,7 @@ public class QrcodeComponent extends AbstractComponent {
      * @param scene_id 场景值ID
      * @param expire_seconds 临时二维码过期时间
      * @return 二维码ticket
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Qrcode create(QrcodeType qrcodeType, int scene_id, int expire_seconds) throws WeixinException {
         return create(qrcodeType, scene_id, null, expire_seconds);
@@ -70,31 +70,57 @@ public class QrcodeComponent extends AbstractComponent {
      * @param scene_str 场景值ID
      * @param expire_seconds 临时二维码过期时间
      * @return 二维码ticket
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Qrcode create(QrcodeType qrcodeType, String scene_str, int expire_seconds) throws WeixinException {
         return create(qrcodeType, 0, scene_str, expire_seconds);
     }
 
+    /**
+     * 创建永久二维码ticket，整型值
+     *
+     * @param scene_id 场景值ID
+     * @return 二维码ticket
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     */
+    public Qrcode createLimit(int scene_id) throws WeixinException {
+        return create(QrcodeType.QR_LIMIT_SCENE, scene_id, null, 0);
+    }
+
+    /**
+     * 创建永久二维码ticket，字符串值
+     *
+     * @param scene_str 场景值ID
+     * @return 二维码ticket
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     */
+    public Qrcode createLimit(String scene_str) throws WeixinException {
+        return create(QrcodeType.QR_LIMIT_STR_SCENE, 0, scene_str, 0);
+    }
+
     //内部公用方法
     private Qrcode create(QrcodeType qrcodeType, int scene_id, String scene_str, int expire_seconds) throws WeixinException {
+        JSONObject scene = new JSONObject();
         //内部业务验证
         switch (qrcodeType) {
             case QR_SCENE:
                 if (scene_id <= 0) {
                     throw new IllegalStateException("场景id不能小于等于0");
                 }
+                scene.put("scene_id", scene_id);
                 break;
             case QR_LIMIT_SCENE:
                 if (scene_id <= 0 || scene_id > 100000) {
                     throw new IllegalStateException("永久场景id参数只支持1-100000");
                 }
+                scene.put("scene_id", scene_id);
                 break;
             case QR_STR_SCENE:
             case QR_LIMIT_STR_SCENE:
                 if (StringUtils.isEmpty(scene_str)) {
                     throw new IllegalStateException("场景scene_str不能为空");
                 }
+                scene.put("scene_str", scene_str);
                 break;
             default:
                 throw new IllegalStateException("场景类型错误");
@@ -106,10 +132,8 @@ public class QrcodeComponent extends AbstractComponent {
         }
         //二维码类型
         ticketJson.put("action_name", qrcodeType.toString());
-
+        //帐号信息
         JSONObject actionInfo = new JSONObject();
-        JSONObject scene = new JSONObject();
-        scene.put("scene_id", scene_id);
         actionInfo.put("scene", scene);
         //二维码详细信息
         ticketJson.put("action_info", actionInfo);
@@ -139,7 +163,7 @@ public class QrcodeComponent extends AbstractComponent {
      *
      * @param ticket 获取的二维码ticket
      * @return 二维码链接，或抛WechatException
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String showQrcode(String ticket) throws WeixinException {
         try {
@@ -154,7 +178,7 @@ public class QrcodeComponent extends AbstractComponent {
      *
      * @param ticket 获取的二维码ticket
      * @param filePath 保存的地址
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void saveQrcode(String ticket, String filePath) throws WeixinException {
         try {

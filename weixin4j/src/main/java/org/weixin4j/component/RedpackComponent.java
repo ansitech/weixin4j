@@ -34,7 +34,7 @@ import org.weixin4j.model.redpack.SendRedPackResult;
 /**
  * 红包组件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class RedpackComponent extends AbstractComponent {
@@ -51,7 +51,7 @@ public class RedpackComponent extends AbstractComponent {
      *
      * @param sendRedPack 现金红包对象
      * @return 发送现金红包返回结果对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SendRedPackResult sendRedPack(SendRedPack sendRedPack) throws WeixinException {
         String partnerId = this.weixin.getWeixinPayConfig().getPartnerId();
@@ -68,7 +68,7 @@ public class RedpackComponent extends AbstractComponent {
      * @param certPath 证书路径
      * @param certSecret 证书密钥
      * @return 发送现金红包返回结果对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SendRedPackResult sendRedPack(SendRedPack sendRedPack, String partnerId, String certPath, String certSecret) throws WeixinException {
         //将统一下单对象转成XML

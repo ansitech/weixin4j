@@ -27,7 +27,7 @@ import org.weixin4j.model.message.ScanCodeInfo;
  *
  * 扫码推事件且弹出“消息接收中”提示框的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class ScanCodeWaitMsgEventMessage extends EventMessage {

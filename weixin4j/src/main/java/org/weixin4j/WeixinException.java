@@ -23,7 +23,7 @@ package org.weixin4j;
  *
  * 微信操作全局异常
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class WeixinException extends Exception {

@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 查询订单结果
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.1
  */
 @XmlRootElement(name = "xml")

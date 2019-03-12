@@ -27,7 +27,7 @@ import org.weixin4j.model.message.SendPicsInfo;
  *
  * 弹出微信相册发图器的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class PicWeixinEventMessage extends EventMessage {

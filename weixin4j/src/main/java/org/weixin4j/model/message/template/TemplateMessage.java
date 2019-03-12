@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 实体类对象，发送模板消息对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class TemplateMessage implements java.io.Serializable {

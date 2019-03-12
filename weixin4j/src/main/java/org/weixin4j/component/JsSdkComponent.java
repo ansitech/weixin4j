@@ -34,7 +34,7 @@ import org.weixin4j.util.SignUtil;
 /**
  * Js接口组件
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class JsSdkComponent extends AbstractComponent {
@@ -47,7 +47,7 @@ public class JsSdkComponent extends AbstractComponent {
      * 获取jsapi_ticket对象，每次都返回最新
      *
      * @return 成功返回jsapi_ticket对象，失败返回NULL
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Ticket getJsApiTicket() throws WeixinException {
         //创建请求对象
@@ -78,7 +78,7 @@ public class JsSdkComponent extends AbstractComponent {
      *
      * @param url 当前网页的URL(包含?及参数，不包含#及其后面部分)
      * @return 微信接口配置对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public WxConfig getWxConfig(String url) throws WeixinException {
         String noncestr = RandomStringUtils.random(16, "abcdefghijklmnopqrstuvwxyz");
@@ -92,7 +92,7 @@ public class JsSdkComponent extends AbstractComponent {
      * @param timestamp 时间戳
      * @param url 当前网页的URL(包含?及参数，不包含#及其后面部分)
      * @return 微信接口配置对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public WxConfig getWxConfig(String noncestr, long timestamp, String url) throws WeixinException {
         return getWxConfig(weixin.getJsApiTicket().getTicket(), noncestr, timestamp, url);

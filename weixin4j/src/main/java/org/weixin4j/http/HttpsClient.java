@@ -19,6 +19,7 @@
  */
 package org.weixin4j.http;
 
+import com.alibaba.fastjson.JSONException;
 import org.weixin4j.model.media.Attachment;
 import com.alibaba.fastjson.JSONObject;
 import java.io.BufferedInputStream;
@@ -55,7 +56,7 @@ import javax.net.ssl.TrustManager;
  * 每次登陆产生一个<tt>OAuth</tt>用户连接,使用<tt>OAuthToken</tt>
  * 可以不用重复向微信平台发送登陆请求，在没有过期时间内，可继续请求。</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class HttpsClient implements java.io.Serializable {
@@ -78,7 +79,7 @@ public class HttpsClient implements java.io.Serializable {
      * @param url 提交地址
      * @param json JSON数据
      * @return 输出流对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Response post(String url, JSONObject json) throws WeixinException {
         //将JSON数据转换为String字符串
@@ -97,7 +98,7 @@ public class HttpsClient implements java.io.Serializable {
      *
      * @param url 请求地址
      * @return 输出流对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Response get(String url) throws WeixinException {
         return httpsRequest(url, GET, null, false, null, null, null);
@@ -109,7 +110,7 @@ public class HttpsClient implements java.io.Serializable {
      * @param url 提交地址
      * @param xml XML数据
      * @return 输出流对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Response postXml(String url, String xml) throws WeixinException {
         return httpsRequest(url, POST, xml, false, null, null, null);
@@ -124,7 +125,7 @@ public class HttpsClient implements java.io.Serializable {
      * @param certPath 证书地址
      * @param certSecret 证书密钥
      * @return 输出流对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Response postXml(String url, String xml, String partnerId, String certPath, String certSecret) throws WeixinException {
         return httpsRequest(url, POST, xml, true, partnerId, certPath, certSecret);
@@ -137,7 +138,7 @@ public class HttpsClient implements java.io.Serializable {
      * @param method 提交方式
      * @param postData 提交数据
      * @return 响应流
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     private Response httpsRequest(String url, String method, String postData, boolean needCert, String partnerId, String certPath, String certSecret)
             throws WeixinException {
@@ -198,7 +199,7 @@ public class HttpsClient implements java.io.Serializable {
      *
      * @param url 连接地址
      * @return https连接对象
-     * @throws IOException
+     * @throws IOException IO异常
      */
     private HttpsURLConnection getHttpsURLConnection(String url) throws IOException {
         URL urlGet = new URL(url);
@@ -278,7 +279,7 @@ public class HttpsClient implements java.io.Serializable {
      * @param url 上传地址
      * @param file 上传文件对象
      * @return 服务器上传响应结果
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String uploadHttps(String url, File file) throws WeixinException {
         HttpsURLConnection https = null;
@@ -372,7 +373,7 @@ public class HttpsClient implements java.io.Serializable {
      *
      * @param url 附件地址
      * @return 附件对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Attachment downloadHttps(String url) throws WeixinException {
         //定义下载附件对象
@@ -403,7 +404,26 @@ public class HttpsClient implements java.io.Serializable {
                 while ((valueString = read.readLine()) != null) {
                     bufferRes.append(valueString);
                 }
-                attachment.setError(bufferRes.toString());
+                String textString = bufferRes.toString();
+                if (textString.contains("video_url")) {
+                    try {
+                        JSONObject result = JSONObject.parseObject(textString);
+                        if (result.containsKey("errcode") && result.getIntValue("errcode") != 0) {
+                            attachment.setError(result.getString("errmsg"));
+                        } else if (result.containsKey("video_url")) {
+                            //发起get请求获取视频流
+                            HttpClient httpClient = new HttpClient();
+                            return httpClient.download(result.getString("video_url"));
+                        } else {
+                            //未知格式
+                            attachment.setError(textString);
+                        }
+                    } catch (JSONException ex) {
+                        attachment.setError(textString);
+                    }
+                } else {
+                    attachment.setError(textString);
+                }
             } else if (contentType.contains("application/json")) {
                 // 定义BufferedReader输入流来读取URL的响应  
                 BufferedReader read = new BufferedReader(new InputStreamReader(in, "UTF-8"));
@@ -416,6 +436,10 @@ public class HttpsClient implements java.io.Serializable {
                 JSONObject result = JSONObject.parseObject(jsonString);
                 if (result.containsKey("errcode") && result.getIntValue("errcode") != 0) {
                     attachment.setError(result.getString("errmsg"));
+                } else if (result.containsKey("video_url")) {
+                    //发起get请求获取视频流
+                    HttpClient httpClient = new HttpClient();
+                    return httpClient.download(result.getString("video_url"));
                 } else {
                     //未知格式
                     attachment.setError(jsonString);

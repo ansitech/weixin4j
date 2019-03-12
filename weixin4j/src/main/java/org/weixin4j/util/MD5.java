@@ -25,7 +25,7 @@ import org.weixin4j.misc.BASE64Encoder;
 /**
  * MD5加密算法
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class MD5 {

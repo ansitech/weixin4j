@@ -22,7 +22,7 @@ package org.weixin4j.model.message;
 /**
  * 实体类对象，用来接受<tt>NewsOutputMessage</tt>中的条目
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Articles {

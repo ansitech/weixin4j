@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * 菜单对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Menu {

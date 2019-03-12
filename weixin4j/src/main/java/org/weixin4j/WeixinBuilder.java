@@ -27,7 +27,7 @@ import org.weixin4j.loader.ITokenLoader;
 /**
  * 微信对象构建器
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public final class WeixinBuilder {

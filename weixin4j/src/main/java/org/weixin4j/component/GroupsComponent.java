@@ -33,7 +33,7 @@ import org.weixin4j.model.groups.Group;
 /**
  * 用户分组组件（微信已过时，推荐使用标签组件）
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class GroupsComponent extends AbstractComponent {
@@ -47,7 +47,7 @@ public class GroupsComponent extends AbstractComponent {
      *
      * @param name 分组名字（30个字符以内）
      * @return 创建成功，返回带Id的Group对象
-     * @throws WeixinException 创建分组异常
+     * @throws org.weixin4j.WeixinException 创建分组异常
      */
     public Group create(String name) throws WeixinException {
         //内部业务验证
@@ -88,7 +88,7 @@ public class GroupsComponent extends AbstractComponent {
      * 最多支持创建500个分组</p>
      *
      * @return 分组列表
-     * @throws WeixinException 查询所有分组异常
+     * @throws org.weixin4j.WeixinException 查询所有分组异常
      */
     public List<Group> get() throws WeixinException {
         List<Group> groupList = new ArrayList<Group>();
@@ -126,7 +126,7 @@ public class GroupsComponent extends AbstractComponent {
      *
      * @param openid 用户唯一标识符
      * @return 返回用户所在分组Id
-     * @throws WeixinException 查询用户所在分组异常
+     * @throws org.weixin4j.WeixinException 查询用户所在分组异常
      */
     public int getId(String openid) throws WeixinException {
         //内部业务验证
@@ -163,7 +163,7 @@ public class GroupsComponent extends AbstractComponent {
      *
      * @param id 分组id，由微信分配
      * @param name 分组名字（30个字符以内）
-     * @throws WeixinException 修改分组名异常
+     * @throws org.weixin4j.WeixinException 修改分组名异常
      */
     public void update(int id, String name) throws WeixinException {
         //内部业务验证
@@ -205,7 +205,7 @@ public class GroupsComponent extends AbstractComponent {
      * 删除分组
      *
      * @param groupId 分组Id
-     * @throws WeixinException 删除分组异常
+     * @throws org.weixin4j.WeixinException 删除分组异常
      */
     public void delete(int groupId) throws WeixinException {
         //拼接参数
@@ -236,7 +236,7 @@ public class GroupsComponent extends AbstractComponent {
      *
      * @param openid 用户唯一标识符
      * @param to_groupid 分组id
-     * @throws WeixinException 移动用户分组异常
+     * @throws org.weixin4j.WeixinException 移动用户分组异常
      */
     public void membersUpdate(String openid, int to_groupid) throws WeixinException {
         //内部业务验证

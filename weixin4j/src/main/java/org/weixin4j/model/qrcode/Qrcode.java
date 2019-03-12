@@ -22,7 +22,7 @@ package org.weixin4j.model.qrcode;
 /**
  * 二维码ticket
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class Qrcode {

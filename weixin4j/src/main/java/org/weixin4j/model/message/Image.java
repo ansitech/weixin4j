@@ -25,7 +25,7 @@ package org.weixin4j.model.message;
  * <p>
  * 提供了获取图片Id<code>getMediaId()</code>等主要方法.</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Image implements java.io.Serializable {

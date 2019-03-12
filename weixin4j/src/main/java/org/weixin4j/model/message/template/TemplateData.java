@@ -22,7 +22,7 @@ package org.weixin4j.model.message.template;
 /**
  * 实体类对象，用来设置<tt>TemplateMessage</tt>中的模板数据
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class TemplateData implements java.io.Serializable {

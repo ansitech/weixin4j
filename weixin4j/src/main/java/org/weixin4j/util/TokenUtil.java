@@ -30,11 +30,11 @@ import java.util.List;
  * Title: 微信公众平台Token算法工具类</p>
  *
  * <p>
- * Description: 为应用提供URL算法<br /> 根据不同的URL返回不同的Token，以适应多微站的需求<br />
- * 例如：Url:http://www.weixin4j.org/api/tiexinqiao<br />
- * 则默认Token:为jEvQdLxi0PvtgK8N+HzUpA==<br /> 根据配置的系统Token不同，而改变</p>
+ * Description: 为应用提供URL算法 根据不同的URL返回不同的Token，以适应多微站的需求
+ * 例如：Url:http://www.weixin4j.org/api/tiexinqiao
+ * 则默认Token:为jEvQdLxi0PvtgK8N+HzUpA== 根据配置的系统Token不同，而改变</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class TokenUtil {

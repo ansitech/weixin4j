@@ -22,7 +22,7 @@ package org.weixin4j.model.message;
 /**
  * 回复音乐消息中的音乐对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Music implements java.io.Serializable {

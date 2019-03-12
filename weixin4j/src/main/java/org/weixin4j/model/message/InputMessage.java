@@ -48,10 +48,10 @@ import org.weixin4j.model.message.normal.VoiceInputMessage;
  * POST的XML数据包转换为消息接受对象
  *
  * <p>
- * 由于POST的是XML数据包，所以不确定为哪种接受消息，<br/>
+ * 由于POST的是XML数据包，所以不确定为哪种接受消息，
  * 所以直接将所有字段都进行转换，最后根据<tt>MsgType</tt>字段来判断取何种数据</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 @XmlRootElement(name = "xml")

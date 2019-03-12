@@ -26,7 +26,7 @@ import org.weixin4j.model.message.EventType;
  * 
  * 点击菜单拉取消息时的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class ClickEventMessage extends EventMessage {

@@ -27,7 +27,7 @@ import org.weixin4j.http.Response;
 /**
  * 网页授权对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public final class SnsAccessToken {
@@ -46,8 +46,8 @@ public final class SnsAccessToken {
      * 正常情况下，微信会返回下述JSON数据包给公众号：
      * {"scope":"snsapi_base","openid":"oK4ipw98o-ngjWfSE5WTZmu1hFT0","expires_in":7200,"refresh_token":"5_1wek3jV4FWN9G2HRPb-jjOfy5RQB-neSOAk1l25BogAxfm7G6ELOmxw2xARSYtbg4F3u2hHylqA9O-Um_cv46Q","access_token":"5_g9mZD7zzUGzqtqQjXDBP4BXL1mzvCfl7PvJNc-OGKBq8xwNV_iMEm47fQaj1KhoUrEAhu5VkSXLlICEzt9Zg-A"}</p>
      *
-     * @param response
-     * @throws WeixinException
+     * @param response 输出对象
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SnsAccessToken(Response response) throws WeixinException {
         this(response.asJSONObject());
@@ -61,7 +61,7 @@ public final class SnsAccessToken {
      * {"scope":"snsapi_base","openid":"oK4ipw98o-ngjWfSE5WTZmu1hFT0","expires_in":7200,"refresh_token":"5_1wek3jV4FWN9G2HRPb-jjOfy5RQB-neSOAk1l25BogAxfm7G6ELOmxw2xARSYtbg4F3u2hHylqA9O-Um_cv46Q","access_token":"5_g9mZD7zzUGzqtqQjXDBP4BXL1mzvCfl7PvJNc-OGKBq8xwNV_iMEm47fQaj1KhoUrEAhu5VkSXLlICEzt9Zg-A"}</p>
      *
      * @param jsonObj JSON数据包
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SnsAccessToken(JSONObject jsonObj) throws WeixinException {
         this.access_token = jsonObj.getString("access_token");

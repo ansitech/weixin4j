@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 /**
  * 普通消息
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public abstract class NormalMessage {

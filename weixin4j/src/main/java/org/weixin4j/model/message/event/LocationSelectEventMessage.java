@@ -27,7 +27,7 @@ import org.weixin4j.model.message.SendLocationInfo;
  *
  * 弹出地理位置选择器的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class LocationSelectEventMessage extends EventMessage {

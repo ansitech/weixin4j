@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * 带子菜单的按钮,此按钮中必须设置子菜单
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class SingleButton extends BaseButton {

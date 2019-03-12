@@ -22,7 +22,7 @@ package org.weixin4j.model.groups;
 /**
  * 微信平台分组对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.4
  */
 public class Group implements java.io.Serializable {

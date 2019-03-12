@@ -34,11 +34,12 @@ import org.weixin4j.model.media.Article;
 import org.weixin4j.model.message.MediaType;
 
 /**
- * 多媒体组件
+ * 多媒体组件，已过时，推荐使用Material组件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
+@Deprecated
 public class MediaComponent extends AbstractComponent {
 
     public MediaComponent(Weixin weixin) {
@@ -55,7 +56,7 @@ public class MediaComponent extends AbstractComponent {
      *
      * @param file form-data中媒体文件标识，有filename、filelength、content-type等信息
      * @return 上传成功返回图文素材Id，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String uploadimg(File file) throws WeixinException {
         //创建请求对象
@@ -84,7 +85,7 @@ public class MediaComponent extends AbstractComponent {
      *
      * @param articles 图文消息，一个图文消息支持1到8条图文
      * @return 上传成功返回图文素材Id，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String uploadnews(List<Article> articles) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -116,7 +117,7 @@ public class MediaComponent extends AbstractComponent {
      * @param mediaType 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
      * @param file form-data中媒体文件标识，有filename、filelength、content-type等信息
      * @return 上传成功返回素材Id，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String upload(MediaType mediaType, File file) throws WeixinException {
         //创建请求对象
@@ -149,7 +150,7 @@ public class MediaComponent extends AbstractComponent {
      *
      * @param mediaId 媒体文件ID
      * @return 正确返回附件对象，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Attachment get(String mediaId) throws WeixinException {
         //下载资源
@@ -164,7 +165,7 @@ public class MediaComponent extends AbstractComponent {
      *
      * @param mediaId 视频媒体文件ID
      * @return 正确返回附件对象，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String getVideoUrl(String mediaId) throws WeixinException {
         try {
@@ -189,7 +190,7 @@ public class MediaComponent extends AbstractComponent {
      *
      * @param mediaId 媒体文件ID
      * @return 正确返回附件对象，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Attachment getJssdkVoice(String mediaId) throws WeixinException {
         //下载资源

@@ -28,7 +28,7 @@ import org.weixin4j.Configuration;
 /**
  * 签名算法
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class SignUtil {
@@ -43,8 +43,7 @@ public class SignUtil {
      * 参与签名的字段包括noncestr（随机字符串）, 有效的jsapi_ticket, timestamp（时间戳）,
      * url（当前网页的URL，不包含#及其后面部分）。
      *
-     * 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，
-     * 使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串string1。
+     * 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）后，使用URL键值对的格式，拼接成字符串string1
      *
      * 这里需要注意的是所有参数名均为小写字符。
      *

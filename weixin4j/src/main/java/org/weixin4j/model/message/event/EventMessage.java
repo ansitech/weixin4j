@@ -22,7 +22,7 @@ package org.weixin4j.model.message.event;
 /**
  * 事件消息
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public abstract class EventMessage {

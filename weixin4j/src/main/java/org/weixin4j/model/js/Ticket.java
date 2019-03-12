@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  * 凭证
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public final class Ticket implements Serializable {

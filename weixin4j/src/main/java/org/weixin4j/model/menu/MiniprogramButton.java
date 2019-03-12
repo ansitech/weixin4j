@@ -22,7 +22,7 @@ package org.weixin4j.model.menu;
 /**
  * 打开小程序
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.2
  */
 public class MiniprogramButton extends SingleButton {

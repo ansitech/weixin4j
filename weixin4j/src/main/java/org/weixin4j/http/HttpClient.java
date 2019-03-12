@@ -19,6 +19,7 @@
  */
 package org.weixin4j.http;
 
+import com.alibaba.fastjson.JSONObject;
 import org.weixin4j.model.media.Attachment;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -41,7 +42,7 @@ import org.weixin4j.WeixinException;
 /**
  * HttpClient业务
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class HttpClient implements java.io.Serializable {
@@ -58,7 +59,7 @@ public class HttpClient implements java.io.Serializable {
      *
      * @param url 请求地址
      * @return 输出流对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Response get(String url) throws WeixinException {
         return httpRequest(url, _GET, null);
@@ -70,10 +71,10 @@ public class HttpClient implements java.io.Serializable {
      * @param url 上传地址
      * @param file 上传文件对象
      * @return 服务器上传响应结果
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
-     * @throws KeyManagementException
+     * @throws IOException IO异常
+     * @throws NoSuchAlgorithmException 算法异常
+     * @throws NoSuchProviderException 私钥异常
+     * @throws KeyManagementException 密钥异常
      */
     public String upload(String url, File file) throws IOException,
             NoSuchAlgorithmException, NoSuchProviderException,
@@ -155,10 +156,10 @@ public class HttpClient implements java.io.Serializable {
      *
      * @param url 附件地址
      * @return 附件对象
-     * @throws IOException
+     * @throws IOException IO异常
      */
     public Attachment download(String url) throws IOException {
-        Attachment att = new Attachment();
+        Attachment attachment = new Attachment();
         URL _url = new URL(url);
         HttpURLConnection http = (HttpURLConnection) _url.openConnection();
         //设置头
@@ -173,7 +174,7 @@ public class HttpClient implements java.io.Serializable {
                 bufferRes.append(valueString);
             }
             in.close();
-            att.setError(bufferRes.toString());
+            attachment.setError(bufferRes.toString());
         } else if (http.getContentType().contains("application/json")) {
             // 定义BufferedReader输入流来读取URL的响应  
             InputStream in = http.getInputStream();
@@ -184,7 +185,14 @@ public class HttpClient implements java.io.Serializable {
                 bufferRes.append(valueString);
             }
             in.close();
-            att.setError(bufferRes.toString());
+            String jsonString = bufferRes.toString();
+            JSONObject result = JSONObject.parseObject(jsonString);
+            if (result.containsKey("errcode") && result.getIntValue("errcode") != 0) {
+                attachment.setError(result.getString("errmsg"));
+            } else {
+                //未知格式
+                attachment.setError(jsonString);
+            }
         } else {
             BufferedInputStream bis = new BufferedInputStream(http.getInputStream());
             String ds = http.getHeaderField("Content-disposition");
@@ -192,15 +200,15 @@ public class HttpClient implements java.io.Serializable {
             String relName = fullName.substring(0, fullName.lastIndexOf("."));
             String suffix = fullName.substring(relName.length() + 1);
 
-            att.setFullName(fullName);
-            att.setFileName(relName);
-            att.setSuffix(suffix);
-            att.setContentLength(http.getHeaderField("Content-Length"));
-            att.setContentType(http.getHeaderField("Content-Type"));
+            attachment.setFullName(fullName);
+            attachment.setFileName(relName);
+            attachment.setSuffix(suffix);
+            attachment.setContentLength(http.getHeaderField("Content-Length"));
+            attachment.setContentType(http.getHeaderField("Content-Type"));
 
-            att.setFileStream(bis);
+            attachment.setFileStream(bis);
         }
-        return att;
+        return attachment;
     }
 
     /**
@@ -208,7 +216,7 @@ public class HttpClient implements java.io.Serializable {
      *
      * @param url 连接地址
      * @return http连接对象
-     * @throws IOException
+     * @throws IOException IO异常
      */
     private HttpURLConnection getHttpURLConnection(String url) throws IOException {
         URL urlGet = new URL(url);
@@ -223,7 +231,7 @@ public class HttpClient implements java.io.Serializable {
      * @param method 提交方式
      * @param postData 提交数据
      * @return 响应流
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     private Response httpRequest(String url, String method, String postData)
             throws WeixinException {

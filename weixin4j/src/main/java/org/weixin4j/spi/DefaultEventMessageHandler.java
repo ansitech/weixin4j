@@ -39,7 +39,7 @@ import org.weixin4j.model.message.output.TextOutputMessage;
 /**
  * 默认事件消息处理器
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.6
  */
 public class DefaultEventMessageHandler implements IEventMessageHandler {

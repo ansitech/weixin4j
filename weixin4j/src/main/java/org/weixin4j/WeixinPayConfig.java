@@ -22,7 +22,7 @@ package org.weixin4j;
 /**
  * 微信支付配置
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.3
  */
 public class WeixinPayConfig {

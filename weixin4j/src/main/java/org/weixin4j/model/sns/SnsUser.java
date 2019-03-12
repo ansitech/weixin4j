@@ -24,7 +24,7 @@ import java.io.Serializable;
 /**
  * 网页授权用户信息
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class SnsUser implements Serializable{

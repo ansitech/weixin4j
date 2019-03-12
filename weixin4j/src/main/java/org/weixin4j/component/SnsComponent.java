@@ -34,7 +34,7 @@ import org.weixin4j.http.HttpsClient;
 /**
  * 网页授权获取用户基本信息
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class SnsComponent extends AbstractComponent {
@@ -107,7 +107,7 @@ public class SnsComponent extends AbstractComponent {
      *
      * @param code 仅能使用一次
      * @return 微信用户OpenId
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      * @since 0.1.0
      */
     public String getOpenId(String code) throws WeixinException {
@@ -118,9 +118,9 @@ public class SnsComponent extends AbstractComponent {
     /**
      * 获取网页授权AccessToken
      *
-     * @param code
+     * @param code 换取身份唯一凭证
      * @return 网页授权AccessToken
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      * @since 0.1.0
      */
     public SnsAccessToken getSnsOAuth2AccessToken(String code) throws WeixinException {
@@ -155,7 +155,7 @@ public class SnsComponent extends AbstractComponent {
      * @param access_token 网页授权接口调用凭证
      * @param openid 用户的唯一标识
      * @return 可用返回true，否则返回false
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      * @since 0.1.0
      */
     public boolean validateAccessToken(String access_token, String openid) throws WeixinException {
@@ -187,7 +187,7 @@ public class SnsComponent extends AbstractComponent {
      *
      * @param refresh_token 用户刷新access_token
      * @return 刷新后的用户网页授权AccessToken
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      * @since 0.1.0
      */
     public SnsAccessToken refreshToken(String refresh_token) throws WeixinException {
@@ -225,9 +225,9 @@ public class SnsComponent extends AbstractComponent {
     /**
      * 拉取用户信息
      *
-     * @param code
+     * @param code 换取身份唯一凭证
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SnsUser getSnsUserByCode(String code) throws WeixinException {
         //默认简体中文
@@ -237,10 +237,10 @@ public class SnsComponent extends AbstractComponent {
     /**
      * 拉取用户信息
      *
-     * @param code
+     * @param code 换取身份唯一凭证
      * @param lang 国家地区语言版本 zh_CN 简体，zh_TW 繁体，en 英语
      * @return 网页授权用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SnsUser getSnsUserByCode(String code, String lang) throws WeixinException {
         if (StringUtils.isEmpty(code)) {
@@ -260,7 +260,7 @@ public class SnsComponent extends AbstractComponent {
      * @param openid 用户的唯一标识
      * @param lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     private SnsUser getSnsUser(String access_token, String openid, String lang) throws WeixinException {
         if (StringUtils.isEmpty(access_token)) {

@@ -25,7 +25,7 @@ import org.weixin4j.factory.WeixinFactory;
 /**
  * DefaultWeixinFactory
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 1.0.0
  */
 public class DefaultWeixinFactory implements WeixinFactory {

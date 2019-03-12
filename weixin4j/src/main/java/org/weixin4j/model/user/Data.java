@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 微信平台关注者openid数据对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Data {

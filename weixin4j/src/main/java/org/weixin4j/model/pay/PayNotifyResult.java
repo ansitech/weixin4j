@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * http://pay.weixin.qq.com/wiki/doc/api/index.php?chapter=9_7
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.4
  */
 @XmlRootElement(name = "xml")

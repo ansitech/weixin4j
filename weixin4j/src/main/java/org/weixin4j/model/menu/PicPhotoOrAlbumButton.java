@@ -22,7 +22,7 @@ package org.weixin4j.model.menu;
 /**
  * 拍照或者相册发图
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class PicPhotoOrAlbumButton extends SingleButton {

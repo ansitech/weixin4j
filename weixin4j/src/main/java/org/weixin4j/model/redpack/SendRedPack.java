@@ -37,7 +37,7 @@ import java.util.Map;
  *
  * 是（证书及使用说明详见https://pay.weixin.qq.com/wiki/doc/api/cash_coupon.php?chapter=4_3）
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.4
  */
 public class SendRedPack {

@@ -32,7 +32,7 @@ import java.util.Properties;
  * <p>
  * 如果存在weixin4j.properties,则加载属性文件中配置的参数</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Configuration {

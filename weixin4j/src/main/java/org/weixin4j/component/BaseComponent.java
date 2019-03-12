@@ -33,7 +33,7 @@ import org.weixin4j.model.base.Token;
 /**
  * 基础组件
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class BaseComponent extends AbstractComponent {
@@ -46,7 +46,7 @@ public class BaseComponent extends AbstractComponent {
      * 获取access_token（每次都获取新的，请缓存下来，2小时过期）
      *
      * @return 获取的AccessToken对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Token token() throws WeixinException {
         if (StringUtils.isEmpty(weixin.getAppId())) {
@@ -83,7 +83,7 @@ public class BaseComponent extends AbstractComponent {
      *
      * @param long_url 长链接
      * @return 短链接
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String shortUrl(String long_url) throws WeixinException {
         if (StringUtils.isEmpty(long_url)) {
@@ -114,7 +114,7 @@ public class BaseComponent extends AbstractComponent {
      * 获取微信服务器IP地址
      *
      * @return 微信服务器IP地址列表
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public List<String> getCallbackIp() throws WeixinException {
         //创建请求对象

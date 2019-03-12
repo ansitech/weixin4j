@@ -32,8 +32,8 @@ import org.weixin4j.model.tags.Tag;
 
 /**
  * 用户标签管理组件
- * 
- * @author 杨启盛<qsyang@ansitech.com>
+ *
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class TagsComponent extends AbstractComponent {
@@ -50,7 +50,7 @@ public class TagsComponent extends AbstractComponent {
      *
      * @param name 标签名，UTF8编码
      * @return 包含标签ID的对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Tag create(String name) throws WeixinException {
         //创建请求对象
@@ -88,7 +88,7 @@ public class TagsComponent extends AbstractComponent {
      * 获取公众号已创建的标签
      *
      * @return 公众号标签列表
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public List<Tag> get() throws WeixinException {
         List<Tag> tagList = new ArrayList<Tag>();
@@ -127,7 +127,7 @@ public class TagsComponent extends AbstractComponent {
      *
      * @param id 标签id，由微信分配
      * @param name 标签名，UTF8编码（30个字符以内）
-     * @throws WeixinException 编辑标签异常
+     * @throws org.weixin4j.WeixinException 微信操作异常 编辑标签异常
      */
     public void update(int id, String name) throws WeixinException {
         //内部业务验证
@@ -169,7 +169,7 @@ public class TagsComponent extends AbstractComponent {
      * 删除标签
      *
      * @param id 标签Id
-     * @throws WeixinException 删除分组异常
+     * @throws org.weixin4j.WeixinException 微信操作异常 删除分组异常
      */
     public void delete(int id) throws WeixinException {
         //拼接参数
@@ -200,7 +200,7 @@ public class TagsComponent extends AbstractComponent {
      *
      * @param tagid 标签ID
      * @param openids 粉丝OpenId集合
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void membersBatchtagging(int tagid, String[] openids) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -228,7 +228,7 @@ public class TagsComponent extends AbstractComponent {
      *
      * @param tagid 标签ID
      * @param openids 粉丝OpenId集合
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void membersBatchuntagging(int tagid, String[] openids) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -256,7 +256,7 @@ public class TagsComponent extends AbstractComponent {
      *
      * @param openid 粉丝OpenId
      * @return 公众号标签ID集合
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Integer[] getIdList(String openid) throws WeixinException {
         //创建请求对象
@@ -283,5 +283,115 @@ public class TagsComponent extends AbstractComponent {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取公众号的黑名单openids列表
+     *
+     * @param openid 开始粉丝OpenId(首次传空)
+     * @return 黑名单列表
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     * @since 0.1.4
+     */
+    public String[] membersGetBlackList(String openid) throws WeixinException {
+        //创建请求对象
+        HttpsClient http = new HttpsClient();
+        //封装请求参数
+        JSONObject postParam = new JSONObject();
+        postParam.put("begin_openid", openid);
+        //调用获取用户身上的标签列表接口
+        Response res = http.post("https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist?access_token=" + weixin.getToken().getAccess_token(), postParam);
+        //根据请求结果判定，是否验证成功
+        JSONObject jsonObj = res.asJSONObject();
+        //成功返回如下JSON:
+        //{
+        // "total":23000,
+        // "count":10000,
+        // "data":{"
+        //    openid":[
+        //       "OPENID1",
+        //       "OPENID2",
+        //       ...,
+        //       "OPENID10000"
+        //    ]
+        //  },
+        //  "next_openid":"OPENID10000"
+        //}
+        if (jsonObj != null) {
+            if (Configuration.isDebug()) {
+                System.out.println("获取/tags/members/getblacklist返回json：" + jsonObj.toString());
+            }
+            Object errcode = jsonObj.get("errcode");
+            if (errcode != null && !errcode.toString().equals("0")) {
+                //返回异常信息
+                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            } else {
+                JSONObject data = jsonObj.getJSONObject("data");
+                if (data != null) {
+                    //获取openid集合
+                    JSONArray arrays = data.getJSONArray("openid");
+                    if (openid != null) {
+                        String[] openids = arrays.toArray(new String[]{});
+                        //根据openid查询用户信息
+                        return openids;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 批量拉黑用户
+     *
+     * @param openids 需要拉入黑名单的用户的openid，一次拉黑最多允许20个
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     * @since 0.1.4
+     */
+    public void membersBatchblacklist(String[] openids) throws WeixinException {
+        JSONObject json = new JSONObject();
+        json.put("openid_list", openids);
+        //创建请求对象
+        HttpsClient http = new HttpsClient();
+        Response res = http.post("https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist?access_token=" + weixin.getToken().getAccess_token(), json);
+        //根据请求结果判定，是否验证成功
+        JSONObject jsonObj = res.asJSONObject();
+        if (jsonObj != null) {
+            if (Configuration.isDebug()) {
+                System.out.println("/tags/members/batchblacklist返回json：" + jsonObj.toString());
+            }
+            Object errcode = jsonObj.get("errcode");
+            if (errcode != null && !errcode.toString().equals("0")) {
+                //返回异常信息
+                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            }
+        }
+    }
+
+    /**
+     * 批量取消拉黑用户
+     *
+     * @param openids 需要取消拉入黑名单的用户的openid，一次拉黑最多允许20个
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     * @since 0.1.4
+     */
+    public void membersBatchunblacklist(String[] openids) throws WeixinException {
+        JSONObject json = new JSONObject();
+        json.put("openid_list", openids);
+        //创建请求对象
+        HttpsClient http = new HttpsClient();
+        Response res = http.post("https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist?access_token=" + weixin.getToken().getAccess_token(), json);
+        //根据请求结果判定，是否验证成功
+        JSONObject jsonObj = res.asJSONObject();
+        if (jsonObj != null) {
+            if (Configuration.isDebug()) {
+                System.out.println("/tags/members/batchunblacklist返回json：" + jsonObj.toString());
+            }
+            Object errcode = jsonObj.get("errcode");
+            if (errcode != null && !errcode.toString().equals("0")) {
+                //返回异常信息
+                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            }
+        }
     }
 }

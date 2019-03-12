@@ -27,7 +27,7 @@ import org.weixin4j.model.message.ScanCodeInfo;
  *
  * 扫码推事件的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class ScanCodePushEventMessage extends EventMessage {

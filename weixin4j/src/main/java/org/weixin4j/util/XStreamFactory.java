@@ -26,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * 将微信POST的流转换为XStream，然后转换为InputMessage对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class XStreamFactory {
@@ -36,8 +36,8 @@ public class XStreamFactory {
      *
      * @param in 输入流
      * @return 字符串
-     * @throws UnsupportedEncodingException
-     * @throws IOException
+     * @throws UnsupportedEncodingException 字符转换异常
+     * @throws IOException IO异常
      */
     public static String inputStream2String(InputStream in)
             throws UnsupportedEncodingException, IOException {

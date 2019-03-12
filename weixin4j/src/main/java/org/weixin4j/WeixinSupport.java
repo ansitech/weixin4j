@@ -30,7 +30,7 @@ import java.util.Map;
  * 每次登陆产生一个<tt>OAuth</tt>用户连接,使用<tt>OAuthToken</tt>
  * 可以不用重复向微信平台发送登陆请求，在没有过期时间内，可继续请求。</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class WeixinSupport {

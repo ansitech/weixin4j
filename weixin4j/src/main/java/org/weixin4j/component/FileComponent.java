@@ -34,9 +34,10 @@ import org.weixin4j.http.HttpClient;
 /**
  * 文件组件，已过时，推荐使用Media组件
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
+@Deprecated
 public class FileComponent extends AbstractComponent {
 
     public FileComponent(Weixin weixin) {
@@ -49,7 +50,7 @@ public class FileComponent extends AbstractComponent {
      * @param mediaType 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
      * @param file form-data中媒体文件标识，有filename、filelength、content-type等信息
      * @return 上传成功返回素材Id，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     @Deprecated
     public String upload(String mediaType, File file) throws WeixinException {
@@ -93,7 +94,7 @@ public class FileComponent extends AbstractComponent {
      *
      * @param mediaId 媒体文件ID
      * @return 正确返回附件对象，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     @Deprecated
     public Attachment download(String mediaId) throws WeixinException {

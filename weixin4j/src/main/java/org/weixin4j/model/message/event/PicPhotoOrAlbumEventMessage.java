@@ -27,7 +27,7 @@ import org.weixin4j.model.message.SendPicsInfo;
  *
  * 弹出拍照或者相册发图的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class PicPhotoOrAlbumEventMessage extends EventMessage {

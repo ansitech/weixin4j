@@ -24,7 +24,7 @@ import java.security.MessageDigest;
 /**
  * SHA1算法
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public final class SHA1 {
