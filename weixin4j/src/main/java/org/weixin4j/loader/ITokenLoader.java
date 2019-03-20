@@ -24,7 +24,7 @@ import org.weixin4j.model.base.Token;
 /**
  * AccessToken加载接口
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public interface ITokenLoader {

@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 /**
  * MapUtil业务
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class MapUtil {
@@ -110,7 +110,7 @@ public class MapUtil {
     /**
      * 简单 xml 转换为 Map
      *
-     * @param xml
+     * @param xml xml字符串
      * @return Map对象
      */
     public static Map<String, String> xmlToMap(String xml) {

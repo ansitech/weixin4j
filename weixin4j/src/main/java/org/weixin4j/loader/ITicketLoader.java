@@ -25,7 +25,7 @@ import org.weixin4j.model.js.TicketType;
 /**
  * JsApiTicket加载接口
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public interface ITicketLoader {
@@ -34,7 +34,7 @@ public interface ITicketLoader {
      * 获取Ticket
      *
      * @param ticketType 临时凭证类型
-     * @see me.hao0.wechat.model.js.TicketType
+     * @see org.weixin4j.model.js.TicketType
      * @return 有效的ticket，若返回""或null，则触发重新从微信请求Ticket的方法refresh
      */
     Ticket get(TicketType ticketType);

@@ -36,7 +36,7 @@ import org.weixin4j.util.XStreamFactory;
 /**
  * 默认消息处理器
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class DefaultMessageHandler implements IMessageHandler {

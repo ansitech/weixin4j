@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 订单详情（package）扩展字符串定义
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.4
  */
 public class WXPackage {

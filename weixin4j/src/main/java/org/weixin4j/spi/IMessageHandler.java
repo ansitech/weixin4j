@@ -25,7 +25,7 @@ import org.weixin4j.WeixinException;
 /**
  * 输入消息处理器
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.6
  */
 public interface IMessageHandler {
@@ -35,7 +35,7 @@ public interface IMessageHandler {
      *
      * @param inputStream 输入流
      * @return 返回xml格式的回复消息
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     String invoke(ServletInputStream inputStream) throws WeixinException;
 
@@ -44,7 +44,7 @@ public interface IMessageHandler {
      *
      * @param inputXml 输入xml
      * @return 返回xml格式的回复消息
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     String invoke(String inputXml) throws WeixinException;
 }

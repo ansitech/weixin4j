@@ -36,7 +36,7 @@ import org.weixin4j.model.user.User;
 /**
  * 用户管理组件
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class UserComponent extends AbstractComponent {
@@ -50,7 +50,7 @@ public class UserComponent extends AbstractComponent {
      *
      * @param openid 用户标识
      * @param remark 新的备注名，长度必须小于30字符
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void updateRemark(String openid, String remark) throws WeixinException {
         //内部业务验证
@@ -92,7 +92,7 @@ public class UserComponent extends AbstractComponent {
      *
      * @param openid 普通用户的标识，对当前公众号唯一
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public User info(String openid) throws WeixinException {
         //默认简体中文
@@ -105,7 +105,7 @@ public class UserComponent extends AbstractComponent {
      * @param openid 普通用户的标识，对当前公众号唯一
      * @param lang 返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public User info(String openid, String lang) throws WeixinException {
         if (StringUtils.isEmpty(openid)) {
@@ -142,7 +142,7 @@ public class UserComponent extends AbstractComponent {
      *
      * @param openids 普通用户的标识数组，对当前公众号唯一
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public List<User> batchGet(String[] openids) throws WeixinException {
         if (openids == null || openids.length == 0) {
@@ -157,7 +157,7 @@ public class UserComponent extends AbstractComponent {
      * @param openids 普通用户的标识数组，对当前公众号唯一
      * @param lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语，默认为zh-CN
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public List<User> batchGet(String[] openids, String lang) throws WeixinException {
         if (StringUtils.isEmpty(lang)) {
@@ -176,7 +176,7 @@ public class UserComponent extends AbstractComponent {
      * @param openids 普通用户的标识数组，对当前公众号唯一
      * @param langs 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语，默认为zh-CN
      * @return 用户对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public List<User> batchGet(String[] openids, String[] langs) throws WeixinException {
         //内部业务验证
@@ -232,7 +232,7 @@ public class UserComponent extends AbstractComponent {
      * 公众号粉丝数量超过1万，推荐使用请分页获取。
      *
      * @return 关注者列表对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Followers getAll() throws WeixinException {
         Followers allFollower = new Followers();
@@ -267,7 +267,7 @@ public class UserComponent extends AbstractComponent {
      *
      * @param next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      * @return 关注者列表对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Followers get(String next_openid) throws WeixinException {
         //拼接参数
@@ -301,7 +301,7 @@ public class UserComponent extends AbstractComponent {
      *
      * @param tagid 标签ID
      * @return 关注者对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Followers tagGetAll(int tagid) throws WeixinException {
         Followers allFollower = new Followers();
@@ -340,7 +340,7 @@ public class UserComponent extends AbstractComponent {
      * @param tagid 标签ID
      * @param next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      * @return 关注者对象
-     * @throws WeixinException when Weixin service or network is unavailable, or
+     * @throws org.weixin4j.WeixinException 微信操作异常 when Weixin service or network is unavailable, or
      * the user has not authorized
      */
     public Followers tagGet(int tagid, String next_openid) throws WeixinException {

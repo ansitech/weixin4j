@@ -32,7 +32,7 @@ import org.weixin4j.model.pay.WXPay;
 /**
  * 微信支付工具
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.4
  */
 public class PayUtil {

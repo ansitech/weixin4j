@@ -26,7 +26,7 @@ package org.weixin4j.model.user;
  * 通过<tt>Weixin</tt>产生一个请求对象，通过<code>getUser()</code>生成一个<tt>User</tt>，
  * 然后可以调用其他方法</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class User {

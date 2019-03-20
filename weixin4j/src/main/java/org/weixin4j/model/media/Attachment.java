@@ -20,11 +20,15 @@
 package org.weixin4j.model.media;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * 附件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Attachment {
@@ -143,6 +147,82 @@ public class Attachment {
      */
     public void setFileStream(BufferedInputStream fileStream) {
         this.fileStream = fileStream;
+    }
+
+    /**
+     * 保存为图片
+     *
+     * @param filePath 文件路径
+     * @param fileName 文件名称
+     * @return 文件对象
+     * @throws java.io.FileNotFoundException
+     */
+    public File saveToImageFile(String filePath, String fileName) throws FileNotFoundException, IOException {
+        String defaultSubffix = ".jpg";
+        if (fileName.contains(".")) {
+            defaultSubffix = fileName.substring(fileName.lastIndexOf("."));
+            fileName = fileName.substring(0, fileName.lastIndexOf("."));
+        }
+        return saveToFile(filePath, fileName, defaultSubffix);
+    }
+
+    /**
+     * 保存到文件
+     *
+     * @param filePath 文件路径
+     * @param fileName 文件名称(不包含后缀)
+     * @param defaultSubffix 默认文件后缀
+     * @return 文件对象
+     * @throws java.io.FileNotFoundException
+     */
+    public File saveToFile(String filePath, String fileName, String defaultSubffix) throws FileNotFoundException, IOException {
+        if (this.error == null) {
+            //默认格式
+            String subffix = defaultSubffix;
+            //校验文件格式
+            if (contentType.startsWith("image")) {
+                //图片文件
+                if (contentType.equals("image/jpeg")) {
+                    subffix = "jpg";
+                } else if (contentType.equals("image/jpeg")) {
+                    subffix = "png";
+                } else if (contentType.equals("image/gif")) {
+                    subffix = "gif";
+                } else {
+                    subffix = "jpg";
+                }
+            } else if (contentType.startsWith("voice") || contentType.startsWith("audio")) {
+                //音频文件
+                if (contentType.equals("voice/mp3") || contentType.equals("audio/mp3")) {
+                    subffix = "mp3";
+                } else if (contentType.equals("voice/amr") || contentType.equals("audio/amr")) {
+                    subffix = "amr";
+                } else if (contentType.equals("voice/speex")) {
+                    subffix = "speex";
+                } else {
+                    subffix = "mp3";
+                }
+            } else if (contentType.startsWith("video")) {
+                //视频文件
+                subffix = "mp4";
+
+            }
+            filePath = filePath.replace("/", File.separator);
+            filePath = filePath.endsWith(File.separator) ? filePath : filePath + File.separator;
+            File directory = new File(filePath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File file = new File(filePath + fileName + (subffix.indexOf(".") == 0 ? subffix : "." + subffix));
+            FileOutputStream out = new FileOutputStream(file);
+            byte[] bs = new byte[1024];
+            int len;
+            while ((len = fileStream.read(bs)) != -1) {
+                out.write(bs, 0, len);
+            }
+            return file;
+        }
+        return null;
     }
 
     /**

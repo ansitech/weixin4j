@@ -25,7 +25,7 @@ import org.weixin4j.WeixinSupport;
 /**
  * 微信组件基础类
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public abstract class AbstractComponent extends WeixinSupport{

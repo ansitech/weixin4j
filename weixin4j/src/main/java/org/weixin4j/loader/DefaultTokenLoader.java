@@ -27,7 +27,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * 单项目时使用（生产环境不推荐）
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class DefaultTokenLoader implements ITokenLoader {

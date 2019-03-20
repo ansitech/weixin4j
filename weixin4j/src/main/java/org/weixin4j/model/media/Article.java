@@ -22,7 +22,7 @@ package org.weixin4j.model.media;
 /**
  * 图文消息对象
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Article {

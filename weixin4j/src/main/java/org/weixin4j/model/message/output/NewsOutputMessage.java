@@ -30,7 +30,7 @@ import java.util.List;
  * <p>
  * 提供了获取多条图文消息信息<code>getArticles()</code>等主要方法.</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class NewsOutputMessage extends OutputMessage {

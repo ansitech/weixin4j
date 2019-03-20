@@ -34,7 +34,7 @@ import org.weixin4j.model.message.template.TemplateMessage;
 /**
  * 消息管理组件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class MessageComponent extends AbstractComponent {
@@ -49,7 +49,7 @@ public class MessageComponent extends AbstractComponent {
      * @param openids 粉丝openid集合
      * @param txtContent 文本消息内容
      * @return 发送成功则返回群发消息Id，否则返回null
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String massSendContent(String[] openids, String txtContent) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -85,7 +85,7 @@ public class MessageComponent extends AbstractComponent {
      * @param openids 粉丝openid集合
      * @param mediaId 图文消息素材Id
      * @return 发送成功则返回群发消息Id，否则返回null
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String massSendNews(String[] openids, String mediaId) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -120,7 +120,7 @@ public class MessageComponent extends AbstractComponent {
      *
      * @param openid 粉丝openid
      * @param txtContent 文本消息内容
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void customSendContent(String openid, String txtContent) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -151,7 +151,7 @@ public class MessageComponent extends AbstractComponent {
      *
      * @param openid 粉丝openid
      * @param articles 图文消息，一个图文消息支持1到10条图文
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void customSendNews(String openid, List<Articles> articles) throws WeixinException {
         JSONObject json = new JSONObject();
@@ -183,7 +183,7 @@ public class MessageComponent extends AbstractComponent {
      * @param openid 接收者
      * @param templateId 模板消息ID
      * @param datas 模板数据
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void sendTemplateMessage(String openid, String templateId, List<TemplateData> datas) throws WeixinException {
         sendTemplateMessage(openid, templateId, datas, null, null);
@@ -196,7 +196,7 @@ public class MessageComponent extends AbstractComponent {
      * @param templateId 模板消息ID
      * @param datas 模板数据
      * @param miniprogram 跳小程序所需数据，不需跳小程序可不用传该数据
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void sendTemplateMessage(String openid, String templateId, List<TemplateData> datas, Miniprogram miniprogram) throws WeixinException {
         sendTemplateMessage(openid, templateId, datas, miniprogram, null);
@@ -209,7 +209,7 @@ public class MessageComponent extends AbstractComponent {
      * @param templateId 模板消息ID
      * @param datas 模板数据
      * @param url 模板跳转链接
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void sendTemplateMessage(String openid, String templateId, List<TemplateData> datas, String url) throws WeixinException {
         sendTemplateMessage(openid, templateId, datas, null, url);
@@ -226,7 +226,7 @@ public class MessageComponent extends AbstractComponent {
      * @param datas 模板数据
      * @param miniprogram 跳小程序所需数据，不需跳小程序可不用传该数据
      * @param url 模板跳转链接
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void sendTemplateMessage(String openid, String templateId, List<TemplateData> datas, Miniprogram miniprogram, String url) throws WeixinException {
         //内部业务验证
@@ -283,7 +283,7 @@ public class MessageComponent extends AbstractComponent {
      * 发送模板消息
      *
      * @param templateMessage 模板消息
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public void sendTemplateMessage(TemplateMessage templateMessage) throws WeixinException {
         sendTemplateMessage(templateMessage.getOpenid(), templateMessage.getTemplateId(), templateMessage.getData(), templateMessage.getMiniprogram(), templateMessage.getUrl());

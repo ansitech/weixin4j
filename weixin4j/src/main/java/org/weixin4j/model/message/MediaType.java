@@ -23,7 +23,7 @@ package org.weixin4j.model.message;
  *
  * 素材类型
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public enum MediaType {
@@ -51,9 +51,28 @@ public enum MediaType {
         this.value = value;
     }
 
-    /**
-     * @return the msgType
-     */
+//    /**
+//     * 根据媒体类型字符串，返回媒体类型枚举对象
+//     *
+//     * @param mediaType 媒体类型字符串
+//     * @return 媒体类型枚举对象
+//     */
+//    public MediaType valueOf(String mediaType) {
+//        if (mediaType.equals(Voice.toString())) {
+//            return Voice;
+//        }
+//        if (mediaType.equals(Image.toString())) {
+//            return Image;
+//        }
+//        if (mediaType.equals(Video.toString())) {
+//            return Image;
+//        }
+//        if (mediaType.equals(Thumb.toString())) {
+//            return Image;
+//        }
+//        return null;
+//    }
+
     @Override
     public String toString() {
         return value;

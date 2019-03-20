@@ -33,7 +33,7 @@ import org.weixin4j.http.Response;
  * 每次登陆产生一个<tt>OAuth</tt>用户连接,使用<tt>OAuthToken</tt>
  * 可以不用重复向微信平台发送登陆请求，在没有过期时间内，可继续请求。</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public final class Token implements Serializable {
@@ -63,8 +63,8 @@ public final class Token implements Serializable {
      * 要求输出内容为一个标准的JSON数据包，正常情况下， 微信会返回下述JSON数据包给公众号：
      * {"access_token":"ACCESS_TOKEN","expires_in":7200}</p>
      *
-     * @param response
-     * @throws WeixinException
+     * @param response 输出对象
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Token(Response response) throws WeixinException {
         this(response.asJSONObject());
@@ -78,7 +78,7 @@ public final class Token implements Serializable {
      * {"access_token":"ACCESS_TOKEN","expires_in":7200}</p>
      *
      * @param jsonObj JSON数据包
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Token(JSONObject jsonObj) throws WeixinException {
         this.access_token = jsonObj.getString("access_token");

@@ -37,7 +37,7 @@ import org.weixin4j.model.message.output.TextOutputMessage;
  * <p>
  * Description: 此消息处理器只负责接收消息和返回已收到消息的功能，无特殊功能。</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.6
  */
 public class DefaultNormalMessageHandler implements INormalMessageHandler {

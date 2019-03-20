@@ -36,7 +36,7 @@ import org.weixin4j.model.pay.UnifiedOrderResult;
 /**
  * 支付组件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class PayComponent extends AbstractComponent {
@@ -50,7 +50,7 @@ public class PayComponent extends AbstractComponent {
      *
      * @param unifiedorder 统一下单对象
      * @return 下单返回结果对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public UnifiedOrderResult payUnifiedOrder(UnifiedOrder unifiedorder) throws WeixinException {
         //将统一下单对象转成XML
@@ -79,7 +79,7 @@ public class PayComponent extends AbstractComponent {
      *
      * @param orderQuery 订单查询对象
      * @return 订单查询结果
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public OrderQueryResult payOrderQuery(OrderQuery orderQuery) throws WeixinException {
         //将统一下单对象转成XML

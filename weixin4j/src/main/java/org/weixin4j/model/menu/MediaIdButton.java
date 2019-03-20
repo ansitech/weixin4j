@@ -22,7 +22,7 @@ package org.weixin4j.model.menu;
 /**
  * 永久素材(图片、音频、视频、图文消息)
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class MediaIdButton extends SingleButton {
@@ -53,7 +53,7 @@ public class MediaIdButton extends SingleButton {
     /**
      * 设置 调用新增永久素材接口返回的合法media_id
      *
-     * @param url 调用新增永久素材接口返回的合法media_id
+     * @param mediaId 调用新增永久素材接口返回的合法media_id
      */
     public void setMedia_Id(String mediaId) {
         this.mediaId = mediaId;

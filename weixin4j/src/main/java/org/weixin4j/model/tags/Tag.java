@@ -25,7 +25,7 @@ package org.weixin4j.model.tags;
  * <p>
  * 通过<tt>Weixin</tt>产生一个请求对象，通过<code>getUserTags()</code>生成一个<tt>Tags</tt>，集合</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.7
  */
 public class Tag {

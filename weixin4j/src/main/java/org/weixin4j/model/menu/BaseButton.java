@@ -22,7 +22,7 @@ package org.weixin4j.model.menu;
 /**
  * 自定义菜单按钮
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class BaseButton {

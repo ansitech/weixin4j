@@ -24,7 +24,7 @@ package org.weixin4j.model.message;
  *
  * <p>提供了获取视频Id<code>getMediaId()</code>等主要方法.</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Video implements java.io.Serializable {
@@ -45,7 +45,7 @@ public class Video implements java.io.Serializable {
     /**
      * 设置 通过上传多媒体文件，得到的id
      *
-     * @param image 通过上传多媒体文件，得到的id
+     * @param mediaId 通过上传多媒体文件，得到的id
      */
     public void setMediaId(String mediaId) {
         this.MediaId = mediaId;

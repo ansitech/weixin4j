@@ -22,7 +22,7 @@ package org.weixin4j.model.menu;
 /**
  * 永久素材(只能是图文消息)
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class ViewLimitedButton extends SingleButton {

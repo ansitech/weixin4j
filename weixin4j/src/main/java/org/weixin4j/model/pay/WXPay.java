@@ -29,7 +29,7 @@ import org.weixin4j.util.MapUtil;
 /**
  * JS API 微信支付
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class WXPay {

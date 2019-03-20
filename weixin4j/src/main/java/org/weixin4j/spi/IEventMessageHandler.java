@@ -37,7 +37,7 @@ import org.weixin4j.model.message.event.ViewEventMessage;
 /**
  * 接收事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.6
  */
 public interface IEventMessageHandler {

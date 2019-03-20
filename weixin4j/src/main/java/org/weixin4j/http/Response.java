@@ -36,7 +36,7 @@ import javax.net.ssl.HttpsURLConnection;
  * <p>
  * Description: </p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Response {
@@ -83,7 +83,7 @@ public class Response {
      * 将输出流转换为String字符串
      *
      * @return 输出内容
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public String asString() throws WeixinException {
         if (null == responseAsString) {
@@ -124,7 +124,7 @@ public class Response {
      * 将输出流转换为JSON对象
      *
      * @return JSONObject对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public JSONObject asJSONObject() throws WeixinException {
         return JSONObject.parseObject(asString());
@@ -134,7 +134,7 @@ public class Response {
      * 将输出流转换为JSON对象
      *
      * @return JSONArray对象
-     * @throws org.weixin4j.WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public JSONArray asJSONArray() throws WeixinException {
         return JSONArray.parseArray(asString());

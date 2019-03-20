@@ -30,7 +30,7 @@ import org.weixin4j.http.Response;
 /**
  * 自定义菜单组件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public class MenuComponent extends AbstractComponent {
@@ -43,7 +43,7 @@ public class MenuComponent extends AbstractComponent {
      * 创建自定义菜单
      *
      * @param menu 菜单对象
-     * @throws WeixinException 创建自定义菜单异常
+     * @throws org.weixin4j.WeixinException 微信操作异常 创建自定义菜单异常
      */
     public void create(Menu menu) throws WeixinException {
         //内部业务验证
@@ -72,7 +72,7 @@ public class MenuComponent extends AbstractComponent {
      * 查询自定义菜单
      *
      * @return 自定义菜单对象
-     * @throws WeixinException 查询自定义菜单对象异常
+     * @throws org.weixin4j.WeixinException 微信操作异常 查询自定义菜单对象异常
      */
     public Menu get() throws WeixinException {
         //创建请求对象
@@ -100,7 +100,7 @@ public class MenuComponent extends AbstractComponent {
     /**
      * 删除自定义菜单
      *
-     * @throws WeixinException 删除自定义菜单异常
+     * @throws org.weixin4j.WeixinException 微信操作异常 删除自定义菜单异常
      */
     public void delete() throws WeixinException {
         //创建请求对象

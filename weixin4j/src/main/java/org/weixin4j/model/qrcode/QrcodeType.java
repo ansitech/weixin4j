@@ -22,7 +22,7 @@ package org.weixin4j.model.qrcode;
 /**
  * 二维码类型
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.1.0
  */
 public enum QrcodeType {
@@ -34,7 +34,7 @@ public enum QrcodeType {
     /**
      * 临时的字符串参数值
      */
-    QR_STR_SCENE("QR_QR_STR_SCENE"),
+    QR_STR_SCENE("QR_STR_SCENE"),
     /**
      * 永久的整型参数值
      */

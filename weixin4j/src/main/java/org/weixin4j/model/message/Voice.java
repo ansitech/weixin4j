@@ -24,7 +24,7 @@ package org.weixin4j.model.message;
  *
  * <p>提供了获取语音Id<code>getMediaId()</code>等主要方法.</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Voice implements java.io.Serializable {

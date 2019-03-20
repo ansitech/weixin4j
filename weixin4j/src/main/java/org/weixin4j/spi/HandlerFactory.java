@@ -24,7 +24,7 @@ import org.weixin4j.Configuration;
 /**
  * 输入消息处理器工具类
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.6
  */
 public class HandlerFactory {

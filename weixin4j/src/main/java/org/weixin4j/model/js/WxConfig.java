@@ -24,7 +24,7 @@ import java.io.Serializable;
 /**
  * 微信js接口config配置
  * 
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class WxConfig implements Serializable {

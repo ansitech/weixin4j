@@ -24,7 +24,7 @@ import org.weixin4j.model.message.EventType;
 /**
  * 关注事件
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class SubscribeEventMessage extends EventMessage {

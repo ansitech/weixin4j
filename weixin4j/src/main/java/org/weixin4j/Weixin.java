@@ -47,7 +47,7 @@ import org.weixin4j.model.js.TicketType;
 /**
  * 微信平台基础支持对象
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Weixin extends WeixinSupport implements java.io.Serializable {
@@ -177,7 +177,7 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
      * 获取Token对象
      *
      * @return Token对象
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      * @since 0.1.0
      */
     public Token getToken() throws WeixinException {
@@ -198,7 +198,7 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
      * 获取jsapi开发ticket
      *
      * @return jsapi_ticket
-     * @throws WeixinException
+     * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public Ticket getJsApiTicket() throws WeixinException {
         Ticket ticket = ticketLoader.get(TicketType.JSAPI);
@@ -324,6 +324,7 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
         return component;
     }
 
+    @Deprecated
     public MediaComponent media() {
         String key = MediaComponent.class.getName();
         if (components.containsKey(key)) {

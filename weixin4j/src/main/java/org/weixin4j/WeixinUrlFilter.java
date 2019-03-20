@@ -36,7 +36,7 @@ import org.weixin4j.spi.HandlerFactory;
 /**
  * 微信公众平台接受消息默认拦截器
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class WeixinUrlFilter implements Filter {

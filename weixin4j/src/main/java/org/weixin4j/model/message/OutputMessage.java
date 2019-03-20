@@ -25,7 +25,7 @@ package org.weixin4j.model.message;
  * <p>
  * 应用程序需要定义一个子类，来实现具体方法</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public abstract class OutputMessage implements java.io.Serializable {

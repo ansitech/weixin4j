@@ -27,7 +27,7 @@ import org.weixin4j.model.message.SendPicsInfo;
  *
  * 扫码推事件的事件推送
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class PicSysPhotoEventMessage extends EventMessage {

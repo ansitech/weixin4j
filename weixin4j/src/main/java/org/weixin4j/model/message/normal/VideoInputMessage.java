@@ -24,7 +24,7 @@ import org.weixin4j.model.message.MsgType;
 /**
  * 视频消息
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class VideoInputMessage extends NormalMessage {

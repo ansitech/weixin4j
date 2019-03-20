@@ -25,7 +25,7 @@ package org.weixin4j.model.user;
  * <p>通过<tt>Weixin</tt>产生一个请求对象，通过<code>getWeixinUser()</code>生成一个<tt>WeixinUser</tt>，
  * 然后调用<tt>getUserList()</tt>，得到本对象.</p>
  *
- * @author 杨启盛<qsyang@ansitech.com>
+ * @author yangqisheng
  * @since 0.0.1
  */
 public class Followers {
