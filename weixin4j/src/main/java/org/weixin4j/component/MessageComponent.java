@@ -251,6 +251,7 @@ public class MessageComponent extends AbstractComponent {
             JSONObject program = new JSONObject();
             program.put("appid", miniprogram.getAppid());
             program.put("pagepath", miniprogram.getPagepath());
+            json.put("miniprogram", program);
         }
         //添加模板数据
         JSONObject data = new JSONObject();
