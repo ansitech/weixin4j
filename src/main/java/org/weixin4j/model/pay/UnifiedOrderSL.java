@@ -23,22 +23,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 统一下单
+ * 服务商统一下单
  *
- * 接口文档：http://pay.weixin.qq.com/wiki/doc/api/index.php?chapter=9_1
+ * 接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi_sl.php?chapter=9_1
  *
  * <b>应用场景</b>
  *
- * 除被扫支付场景以外，商户系统先调用该接口在微信支付服务后台生成预支付交易单，返回正确的预支付交易回话标识后再按扫码、JSAPI、APP等不同场景生成交易串调起支付。
+ * 除付款码支付场景以外，商户系统先调用该接口在微信支付服务后台生成预支付交易单，返回正确的预支付交易会话标识后再按Native、JSAPI、APP等不同场景生成交易串调起支付。
  *
  * <b>是否需要证书</b>
  *
  * 不需要
  *
  * @author yangqisheng
- * @since 0.0.4
+ * @since 0.1.5
  */
-public class UnifiedOrder {
+public class UnifiedOrderSL {
 
     private String appid;               //公众账号ID
     private String mch_id;              //商户号
@@ -52,6 +52,10 @@ public class UnifiedOrder {
     private String trade_type;          //交易类型 取值如下：JSAPI，NATIVE，APP
     private String product_id;          //商品ID，trade_type=NATIVE时，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
     private String openid;              //用户标识
+    //服务商扩展字段
+    private String sub_appid;           //子商户公众账号ID 
+    private String sub_mch_id;          //子商户号
+    private String sub_openid;          //用户子标识
 
     public Map<String, String> toMap() {
         Map<String, String> map = new HashMap<String, String>();
@@ -68,6 +72,13 @@ public class UnifiedOrder {
             map.put("product_id", product_id);
         }
         map.put("spbill_create_ip", spbill_create_ip);
+        if (sub_appid != null) {
+            map.put("sub_appid", sub_appid);
+        }
+        map.put("sub_mch_id", sub_mch_id);
+        if (sub_openid != null) {
+            map.put("sub_openid", sub_openid);
+        }
         map.put("total_fee", total_fee);
         map.put("trade_type", trade_type);
         return map;
@@ -89,6 +100,13 @@ public class UnifiedOrder {
             sb.append("<product_id><![CDATA[").append(product_id).append("]]></product_id>");
         }
         sb.append("<spbill_create_ip><![CDATA[").append(spbill_create_ip).append("]]></spbill_create_ip>");
+        if (sub_appid != null) {
+            sb.append("<sub_appid><![CDATA[").append(sub_appid).append("]]></sub_appid>");
+        }
+        sb.append("<sub_mch_id><![CDATA[").append(sub_mch_id).append("]]></sub_mch_id>");
+        if (sub_openid != null) {
+            sb.append("<sub_openid><![CDATA[").append(sub_openid).append("]]></sub_openid>");
+        }
         sb.append("<total_fee><![CDATA[").append(total_fee).append("]]></total_fee>");
         sb.append("<trade_type><![CDATA[").append(trade_type).append("]]></trade_type>");
         sb.append("<sign><![CDATA[").append(sign).append("]]></sign>");
@@ -96,55 +114,116 @@ public class UnifiedOrder {
         return sb.toString();
     }
 
+    public String getAppid() {
+        return appid;
+    }
+
     public void setAppid(String appid) {
         this.appid = appid;
+    }
+
+    public String getMch_id() {
+        return mch_id;
     }
 
     public void setMch_id(String mch_id) {
         this.mch_id = mch_id;
     }
 
+    public String getSub_appid() {
+        return sub_appid;
+    }
+
+    public void setSub_appid(String sub_appid) {
+        this.sub_appid = sub_appid;
+    }
+
+    public String getSub_mch_id() {
+        return sub_mch_id;
+    }
+
+    public void setSub_mch_id(String sub_mch_id) {
+        this.sub_mch_id = sub_mch_id;
+    }
+
+    public String getNonce_str() {
+        return nonce_str;
+    }
+
     public void setNonce_str(String nonce_str) {
         this.nonce_str = nonce_str;
+    }
+
+    public String getSign() {
+        return sign;
     }
 
     public void setSign(String sign) {
         this.sign = sign;
     }
 
+    public String getBody() {
+        return body;
+    }
+
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getOut_trade_no() {
+        return out_trade_no;
     }
 
     public void setOut_trade_no(String out_trade_no) {
         this.out_trade_no = out_trade_no;
     }
 
+    public String getTotal_fee() {
+        return total_fee;
+    }
+
     public void setTotal_fee(String total_fee) {
         this.total_fee = total_fee;
+    }
+
+    public String getSpbill_create_ip() {
+        return spbill_create_ip;
     }
 
     public void setSpbill_create_ip(String spbill_create_ip) {
         this.spbill_create_ip = spbill_create_ip;
     }
 
+    public String getNotify_url() {
+        return notify_url;
+    }
+
     public void setNotify_url(String notify_url) {
         this.notify_url = notify_url;
+    }
+
+    public String getTrade_type() {
+        return trade_type;
     }
 
     public void setTrade_type(String trade_type) {
         this.trade_type = trade_type;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
     public void setOpenid(String openid) {
         this.openid = openid;
     }
 
-    public String getProduct_id() {
-        return product_id;
+    public String getSub_openid() {
+        return sub_openid;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public void setSub_openid(String sub_openid) {
+        this.sub_openid = sub_openid;
     }
+
 }

@@ -32,6 +32,8 @@ import org.weixin4j.model.pay.OrderQuery;
 import org.weixin4j.model.pay.OrderQueryResult;
 import org.weixin4j.model.pay.UnifiedOrder;
 import org.weixin4j.model.pay.UnifiedOrderResult;
+import org.weixin4j.model.pay.UnifiedOrderSL;
+import org.weixin4j.model.pay.UnifiedOrderSLResult;
 
 /**
  * 支付组件
@@ -68,6 +70,35 @@ public class PayComponent extends AbstractComponent {
             JAXBContext context = JAXBContext.newInstance(UnifiedOrderResult.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             UnifiedOrderResult result = (UnifiedOrderResult) unmarshaller.unmarshal(new StringReader(xmlResult));
+            return result;
+        } catch (JAXBException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 服务商统一下单
+     *
+     * @param unifiedOrderSL 统一下单对象
+     * @return 下单返回结果对象
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     */
+    public UnifiedOrderSLResult payUnifiedOrderSL(UnifiedOrderSL unifiedOrderSL) throws WeixinException {
+        //将统一下单对象转成XML
+        String xmlPost = unifiedOrderSL.toXML();
+        if (Configuration.isDebug()) {
+            System.out.println("调试模式_服务商统一下单接口 提交XML数据：" + xmlPost);
+        }
+        //创建请求对象
+        HttpsClient http = new HttpsClient();
+        //提交xml格式数据
+        Response res = http.postXml("https://api.mch.weixin.qq.com/pay/unifiedorder", xmlPost);
+        //获取微信平台下单接口返回数据
+        String xmlResult = res.asString();
+        try {
+            JAXBContext context = JAXBContext.newInstance(UnifiedOrderSLResult.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            UnifiedOrderSLResult result = (UnifiedOrderSLResult) unmarshaller.unmarshal(new StringReader(xmlResult));
             return result;
         } catch (JAXBException ex) {
             return null;
