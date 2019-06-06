@@ -56,7 +56,7 @@ public final class Ticket implements Serializable {
     private long create_time;
 
     public Ticket(TicketType ticketType, String ticket, int expires_in) {
-        this(ticketType, ticket, expires_in, new Date().getTime());
+        this(ticketType, ticket, expires_in, System.currentTimeMillis());
     }
 
     public Ticket(TicketType ticketType, String ticket, int expires_in, long create_time) {

@@ -198,7 +198,7 @@ public class DefaultMessageHandler implements IMessageHandler {
     //设置详细信息
     private static void setOutputMsgInfo(OutputMessage oms, InputMessage msg) throws Exception {
         // 设置发送信息
-        oms.setCreateTime(new Date().getTime());
+        oms.setCreateTime(System.currentTimeMillis());
         oms.setToUserName(msg.getFromUserName());
         oms.setFromUserName(msg.getToUserName());
     }

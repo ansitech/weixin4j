@@ -35,7 +35,7 @@ public final class SnsAccessToken {
     private String access_token;
     private int expires_in = 7200;
     private String refresh_token;
-    private long exprexpired_time;
+    private long expired_time;
     private String openid;
     private String scope;
 
@@ -70,7 +70,7 @@ public final class SnsAccessToken {
         this.openid = jsonObj.getString("openid");
         this.scope = jsonObj.getString("scope");
         //设置下次过期时间 = 当前时间 + (凭证有效时间(秒) * 1000)
-        this.exprexpired_time = new Date().getTime() + (this.expires_in * 1000);
+        this.expired_time = System.currentTimeMillis() + (this.expires_in * 1000);
     }
 
     public String getAccess_token() {
@@ -87,9 +87,7 @@ public final class SnsAccessToken {
      * @return 过期返回 true,否则返回false
      */
     public boolean isExprexpired() {
-        Date now = new Date();
-        long nowLong = now.getTime();
-        return nowLong > exprexpired_time;
+        return System.currentTimeMillis() > expired_time;
     }
 
     /**
