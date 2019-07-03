@@ -150,13 +150,14 @@ public class Demo {
 
         //设置自定义菜单
         menu.setButton(buttons);
-
-        try {
-            //调用微信自定义菜单组件，创建自定义菜单
-            menuComponet.create(menu);
-        } catch (WeixinException ex) {
-            //打印创建异常日志
-            ex.printStackTrace();
-        }
+        System.out.println(menu.toJSONObject().toJSONString());
+        //try {
+        //
+        //    //调用微信自定义菜单组件，创建自定义菜单
+        //    //menuComponet.create(menu);
+        //} catch (WeixinException ex) {
+        //    //打印创建异常日志
+        //    ex.printStackTrace();
+        //}
     }
 }

@@ -66,7 +66,11 @@ public enum ButtonType {
     /**
      * 跳转图文消息URL
      */
-    View_Limited("view_limited");
+    View_Limited("view_limited"),
+    /**
+     * 小程序菜单
+     */
+    Miniprogram("miniprogram");
     
     private String value = "";
 
