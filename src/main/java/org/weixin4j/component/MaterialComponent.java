@@ -55,7 +55,7 @@ public class MaterialComponent extends AbstractComponent {
                 media.setMediaType(MediaType.valueOf(WordUtils.capitalize(jsonObj.getString("type"))));
                 media.setMediaId(jsonObj.getString("media_id"));
                 //转换为毫秒数
-                long time = jsonObj.getLongValue("created_at") * 1000l;
+                long time = jsonObj.getLongValue("created_at") * 1000L;
                 media.setCreatedAt(new Date(time));
                 //返回多媒体文件id
                 return media;

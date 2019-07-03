@@ -53,6 +53,10 @@ public class MiniprogramButton extends SingleButton {
         this.url = url;
     }
 
+    public String getType() {
+        return ButtonType.Miniprogram.toString();
+    }
+
     public String getAppid() {
         return appid;
     }

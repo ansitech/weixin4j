@@ -2,7 +2,7 @@
  * 微信公众平台(JAVA) SDK
  *
  * Copyright (c) 2014, Ansitech Network Technology Co.,Ltd All rights reserved.
- * 
+ *
  * http://www.weixin4j.org/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@ package org.weixin4j.model.menu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +94,10 @@ public class Menu {
         } else if (type.equals(ButtonType.View_Limited.toString())) {
             //永久素材(图文消息)
             singleButton = new ViewLimitedButton(jsonButton.getString("name"), jsonButton.getString("media_id"));
+        } else if (type.equals(ButtonType.Miniprogram.toString())) {
+            //小程序菜单
+            singleButton = new MiniprogramButton(jsonButton.getString("name"), jsonButton.getString("appid"),
+                    jsonButton.getString("pagepath"), jsonButton.getString("url"));
         }
         if (jsonButton.containsKey("sub_button")) {
             JSONArray sub_button = jsonButton.getJSONArray("sub_button");
@@ -170,6 +175,12 @@ public class Menu {
                     ViewLimitedButton cBtn = (ViewLimitedButton) btn;
                     btnJson.put("type", cBtn.getType());
                     btnJson.put("media_id", cBtn.getMedia_Id());
+                } else if (btn instanceof MiniprogramButton) {
+                    MiniprogramButton cBtn = (MiniprogramButton) btn;
+                    btnJson.put("type", cBtn.getType());
+                    btnJson.put("url", cBtn.getUrl());
+                    btnJson.put("appid", cBtn.getAppid());
+                    btnJson.put("pagepath", cBtn.getPagepath());
                 }
                 //设置子菜单信息
                 JSONArray subButtonArray = new JSONArray();
@@ -216,6 +227,12 @@ public class Menu {
                         ViewLimitedButton cBtn = (ViewLimitedButton) subBtn;
                         subBtnJson.put("type", cBtn.getType());
                         subBtnJson.put("media_id", cBtn.getMedia_Id());
+                    } else if (subBtn instanceof MiniprogramButton) {
+                        MiniprogramButton cBtn = (MiniprogramButton) subBtn;
+                        subBtnJson.put("type", cBtn.getType());
+                        subBtnJson.put("url", cBtn.getUrl());
+                        subBtnJson.put("appid", cBtn.getAppid());
+                        subBtnJson.put("pagepath", cBtn.getPagepath());
                     }
                     subButtonArray.add(subBtnJson);
                 }

@@ -146,7 +146,7 @@ public final class Token implements Serializable {
     public void setExpires_in(int expires_in) {
         this.expires_in = expires_in;
         //使用当前时间记录
-        setExpires_in(expires_in, new Date().getTime());
+        setExpires_in(expires_in, System.currentTimeMillis());
     }
 
     /**
