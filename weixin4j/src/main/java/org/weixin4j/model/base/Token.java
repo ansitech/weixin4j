@@ -19,7 +19,7 @@
  */
 package org.weixin4j.model.base;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import org.weixin4j.WeixinException;
 import java.io.Serializable;
 import java.util.Date;
@@ -67,7 +67,7 @@ public final class Token implements Serializable {
      * @throws WeixinException
      */
     public Token(Response response) throws WeixinException {
-        this(response.asJSONObject());
+        this(response.asJsonObject());
     }
 
     /**
@@ -80,13 +80,13 @@ public final class Token implements Serializable {
      * @param jsonObj JSON数据包
      * @throws WeixinException
      */
-    public Token(JSONObject jsonObj) throws WeixinException {
-        this.access_token = jsonObj.getString("access_token");
+    public Token(JsonObject jsonObj) throws WeixinException {
+        this.access_token = jsonObj.get("access_token").getAsString();
         //根据当前时间的毫秒数+获取的秒数计算过期时间
-        int expiresIn = jsonObj.getIntValue("expires_in");
-        if (jsonObj.containsKey("create_time")) {
+        int expiresIn = jsonObj.get("expires_in").getAsInt();
+        if (jsonObj.has("create_time")) {
             //获取创建时间
-            long createTime = jsonObj.getLong("create_time");
+            long createTime = jsonObj.get("create_time").getAsLong();
             if (createTime > 0) {
                 //设定指定日期
                 setExpires_in(expiresIn, createTime);

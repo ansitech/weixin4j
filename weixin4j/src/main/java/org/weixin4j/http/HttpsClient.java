@@ -19,8 +19,9 @@
  */
 package org.weixin4j.http;
 
+import com.google.gson.JsonParser;
 import org.weixin4j.model.media.Attachment;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import java.io.BufferedInputStream;
 import org.weixin4j.Configuration;
 import org.weixin4j.WeixinException;
@@ -80,7 +81,7 @@ public class HttpsClient implements java.io.Serializable {
      * @return 输出流对象
      * @throws WeixinException
      */
-    public Response post(String url, JSONObject json) throws WeixinException {
+    public Response post(String url, JsonObject json) throws WeixinException {
         //将JSON数据转换为String字符串
         String jsonString = json == null ? null : json.toString();
         if (Configuration.isDebug()) {
@@ -413,9 +414,9 @@ public class HttpsClient implements java.io.Serializable {
                     bufferRes.append(valueString);
                 }
                 String jsonString = bufferRes.toString();
-                JSONObject result = JSONObject.parseObject(jsonString);
-                if (result.containsKey("errcode") && result.getIntValue("errcode") != 0) {
-                    attachment.setError(result.getString("errmsg"));
+                JsonObject result = new JsonParser().parse(jsonString).getAsJsonObject();
+                if (result.has("errcode") && result.get("errcode").getAsInt() != 0) {
+                    attachment.setError(result.get("errmsg").getAsString());
                 } else {
                     //未知格式
                     attachment.setError(jsonString);

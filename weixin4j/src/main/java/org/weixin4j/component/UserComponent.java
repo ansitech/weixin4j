@@ -19,10 +19,12 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.weixin4j.Configuration;
 import org.weixin4j.model.user.Data;
@@ -61,15 +63,15 @@ public class UserComponent extends AbstractComponent {
             throw new IllegalArgumentException("remark can't be null or empty");
         }
         //拼接参数
-        JSONObject postParam = new JSONObject();
-        postParam.put("openid", openid);
-        postParam.put("remark", remark);
+        JsonObject postParam = new JsonObject();
+        postParam.addProperty("openid", openid);
+        postParam.addProperty("remark", remark);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=" + weixin.getToken().getAccess_token(), postParam);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             throw new WeixinException(getCause(-1));
         }
@@ -79,7 +81,7 @@ public class UserComponent extends AbstractComponent {
         //判断是否修改成功
         //正常时返回 {"errcode": 0, "errmsg": "ok"}
         //错误时返回 示例：{"errcode":40013,"errmsg":"invalid appid"}
-        int errcode = jsonObj.getIntValue("errcode");
+        int errcode = jsonObj.get("errcode").getAsInt();
         //登录成功，设置accessToken和过期时间
         if (errcode != 0) {
             //返回异常信息
@@ -121,7 +123,7 @@ public class UserComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/user/info" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             return null;
         }
@@ -131,10 +133,10 @@ public class UserComponent extends AbstractComponent {
         Object errcode = jsonObj.get("errcode");
         if (errcode != null) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
         //设置公众号信息
-        return JSONObject.toJavaObject(jsonObj, User.class);
+        return new Gson().fromJson(jsonObj, User.class);
     }
 
     /**
@@ -190,21 +192,21 @@ public class UserComponent extends AbstractComponent {
             throw new IllegalArgumentException("openids length are not same to langs length");
         }
         //拼接参数
-        JSONObject postUserList = new JSONObject();
-        JSONArray userList = new JSONArray();
+        JsonObject postUserList = new JsonObject();
+        JsonArray userList = new JsonArray();
         for (int i = 0; i < openids.length; i++) {
-            JSONObject postUser = new JSONObject();
-            postUser.put("openid", openids[i]);
-            postUser.put("lang", langs[i]);
+            JsonObject postUser = new JsonObject();
+            postUser.addProperty("openid", openids[i]);
+            postUser.addProperty("lang", langs[i]);
             userList.add(postUser);
         }
-        postUserList.put("user_list", userList);
+        postUserList.add("user_list", userList);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=" + weixin.getToken().getAccess_token(), postUserList);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             return null;
         }
@@ -214,14 +216,14 @@ public class UserComponent extends AbstractComponent {
         Object errcode = jsonObj.get("errcode");
         if (errcode != null) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
         //获取用户列表
-        JSONArray userlistArray = jsonObj.getJSONArray("user_info_list");
+        JsonArray userlistArray = jsonObj.getAsJsonArray("user_info_list");
         List<User> users = new ArrayList<User>();
         for (Object userObj : userlistArray) {
             //转换为User对象
-            users.add(JSONObject.toJavaObject((JSONObject) userObj, User.class));
+            users.add(new Gson().fromJson((JsonObject) userObj, User.class));
         }
         return users;
     }
@@ -281,7 +283,7 @@ public class UserComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/user/get" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             return null;
         }
@@ -291,9 +293,9 @@ public class UserComponent extends AbstractComponent {
         Object errcode = jsonObj.get("errcode");
         if (errcode != null) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
-        return (Followers) JSONObject.toJavaObject(jsonObj, Followers.class);
+        return new Gson().fromJson(jsonObj, Followers.class);
     }
 
     /**
@@ -355,7 +357,7 @@ public class UserComponent extends AbstractComponent {
         //调用获取标签下粉丝列表接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/user/tag/get" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         Followers follower = null;
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
@@ -364,9 +366,9 @@ public class UserComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
-            follower = (Followers) JSONObject.toJavaObject(jsonObj, Followers.class);
+            follower = new Gson().fromJson(jsonObj, Followers.class);
         }
         return follower;
     }

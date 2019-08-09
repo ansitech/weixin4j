@@ -19,10 +19,13 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
 import org.weixin4j.WeixinException;
@@ -62,7 +65,7 @@ public class MediaComponent extends AbstractComponent {
         HttpsClient http = new HttpsClient();
         //上传素材，返回JSON数据包
         String jsonStr = http.uploadHttps("https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" + weixin.getToken().getAccess_token(), file);
-        JSONObject jsonObj = JSONObject.parseObject(jsonStr);
+        JsonObject jsonObj = new JsonParser().parse(jsonStr).getAsJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("上传图文消息内的图片返回json：" + jsonObj.toString());
@@ -70,10 +73,10 @@ public class MediaComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
                 //返回图片Url
-                return jsonObj.getString("url");
+                return jsonObj.get("url").getAsString();
             }
         }
         return null;
@@ -87,13 +90,13 @@ public class MediaComponent extends AbstractComponent {
      * @throws WeixinException
      */
     public String uploadnews(List<Article> articles) throws WeixinException {
-        JSONObject json = new JSONObject();
-        json.put("articles", articles);
+        JsonObject json = new JsonObject();
+        json.add("articles", new JsonParser().parse(new Gson().toJson(articles)).getAsJsonArray());
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("uploadnews返回json：" + jsonObj.toString());
@@ -101,10 +104,10 @@ public class MediaComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
                 //返回图文消息id
-                return jsonObj.getString("media_id");
+                return jsonObj.get("media_id").getAsString();
             }
         }
         return null;
@@ -123,7 +126,7 @@ public class MediaComponent extends AbstractComponent {
         HttpsClient http = new HttpsClient();
         //上传素材，返回JSON数据包
         String jsonStr = http.uploadHttps("https://api.weixin.qq.com/cgi-bin/media/upload?access_token=" + weixin.getToken().getAccess_token() + "&type=" + mediaType.toString(), file);
-        JSONObject jsonObj = JSONObject.parseObject(jsonStr);
+        JsonObject jsonObj = new JsonParser().parse(jsonStr).getAsJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("上传多媒体文件返回json：" + jsonObj.toString());
@@ -131,10 +134,10 @@ public class MediaComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
                 //返回多媒体文件id
-                return jsonObj.getString("media_id");
+                return jsonObj.get("media_id").getAsString();
             }
         }
         return null;

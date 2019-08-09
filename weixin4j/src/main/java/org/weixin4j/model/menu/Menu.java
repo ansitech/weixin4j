@@ -19,8 +19,9 @@
  */
 package org.weixin4j.model.menu;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,70 +38,70 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(JSONObject jsonObj) {
+    public Menu(JsonObject jsonObj) {
         //初始化一级自定义菜单
         button = new ArrayList<SingleButton>();
 
         //获取menu对象
-        JSONObject menuObj = jsonObj.getJSONObject("menu");
+        JsonObject menuObj = jsonObj.get("menu").getAsJsonObject();
         if (menuObj != null) {
             //获取button列表
-            JSONArray buttonJson = menuObj.getJSONArray("button");
+            JsonArray buttonJson = menuObj.getAsJsonArray("button");
             for (int i = 0; i < buttonJson.size(); i++) {
-                JSONObject jsonButton = buttonJson.getJSONObject(i);
+                JsonObject jsonButton = buttonJson.get(i).getAsJsonObject();
                 recursion(jsonButton, null);
             }
         }
     }
 
-    private void recursion(JSONObject jsonButton, SingleButton menuButton) {
+    private void recursion(JsonObject jsonButton, SingleButton menuButton) {
         String type = null;
-        if (jsonButton.containsKey("type")) {
-            type = jsonButton.getString("type");
+        if (jsonButton.has("type")) {
+            type = jsonButton.get("type").getAsString();
         }
         SingleButton singleButton = null;
         //判断对象type
         if (type == null) {
             //有子的自定义菜单
-            singleButton = new SingleButton(jsonButton.getString("name"));
+            singleButton = new SingleButton(jsonButton.get("name").getAsString());
         } else if (type.equals(ButtonType.Click.toString())) {
             //转成点击按钮
-            singleButton = new ClickButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new ClickButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.View.toString())) {
             //转成view按钮
-            singleButton = new ViewButton(jsonButton.getString("name"), jsonButton.getString("url"));
+            singleButton = new ViewButton(jsonButton.get("name").getAsString(), jsonButton.get("url").getAsString());
         } else if (type.equals(ButtonType.Scancode_Push.toString())) {
             //扫码推事件
-            singleButton = new ScancodePushButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new ScancodePushButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Scancode_Waitmsg.toString())) {
             //扫码推事件且弹出“消息接收中”提示框
-            singleButton = new ScancodeWaitMsgButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new ScancodeWaitMsgButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Pic_SysPhoto.toString())) {
             //弹出系统拍照发图
-            singleButton = new PicSysPhotoButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new PicSysPhotoButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Pic_Photo_OR_Album.toString())) {
             //弹出拍照或者相册发图
-            singleButton = new PicPhotoOrAlbumButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new PicPhotoOrAlbumButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Pic_Weixin.toString())) {
             //弹出微信相册发图器
-            singleButton = new PicWeixinButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new PicWeixinButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Location_Select.toString())) {
             //弹出地理位置选择器
-            singleButton = new LocationSelectButton(jsonButton.getString("name"), jsonButton.getString("key"));
+            singleButton = new LocationSelectButton(jsonButton.get("name").getAsString(), jsonButton.get("key").getAsString());
         } else if (type.equals(ButtonType.Media_Id.toString())) {
             //永久素材(图片、音频、视频、图文消息)
-            singleButton = new MediaIdButton(jsonButton.getString("name"), jsonButton.getString("media_id"));
+            singleButton = new MediaIdButton(jsonButton.get("name").getAsString(), jsonButton.get("media_id").getAsString());
         } else if (type.equals(ButtonType.View_Limited.toString())) {
             //永久素材(图文消息)
-            singleButton = new ViewLimitedButton(jsonButton.getString("name"), jsonButton.getString("media_id"));
+            singleButton = new ViewLimitedButton(jsonButton.get("name").getAsString(), jsonButton.get("media_id").getAsString());
         }
-        if (jsonButton.containsKey("sub_button")) {
-            JSONArray sub_button = jsonButton.getJSONArray("sub_button");
+        if (jsonButton.has("sub_button")) {
+            JsonArray sub_button = jsonButton.getAsJsonArray("sub_button");
             //判断是否存在子菜单
-            if (!sub_button.isEmpty()) {
+            if (sub_button.size() > 0) {
                 //如果不为空，则添加到singleButton中
                 for (int i = 0; i < sub_button.size(); i++) {
-                    JSONObject jsonSubButton = sub_button.getJSONObject(i);
+                    JsonObject jsonSubButton = sub_button.get(i).getAsJsonObject();
                     recursion(jsonSubButton, singleButton);
                 }
             }
@@ -120,110 +121,110 @@ public class Menu {
      *
      * @return JSON提交对象
      */
-    public JSONObject toJSONObject() {
-        JSONObject buttonJson = new JSONObject();
-        JSONArray buttonArray = new JSONArray();
+    public JsonObject toJsonObject() {
+        JsonObject buttonJson = new JsonObject();
+        JsonArray buttonArray = new JsonArray();
         if (this.button != null) {
             //添加一级菜单
             for (SingleButton btn : button) {
                 List<SingleButton> subButton = btn.getSubButton();
                 //设置顶级菜单信息
-                JSONObject btnJson = new JSONObject();
-                btnJson.put("name", btn.getName());
+                JsonObject btnJson = new JsonObject();
+                btnJson.addProperty("name", btn.getName());
                 if (btn instanceof ViewButton) {
                     ViewButton cBtn = (ViewButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("url", cBtn.getUrl());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("url", cBtn.getUrl());
                 } else if (btn instanceof ClickButton) {
                     ClickButton cBtn = (ClickButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof ScancodePushButton) {
                     ScancodePushButton cBtn = (ScancodePushButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof ScancodeWaitMsgButton) {
                     ScancodeWaitMsgButton cBtn = (ScancodeWaitMsgButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof PicSysPhotoButton) {
                     PicSysPhotoButton cBtn = (PicSysPhotoButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof PicPhotoOrAlbumButton) {
                     PicPhotoOrAlbumButton cBtn = (PicPhotoOrAlbumButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof PicWeixinButton) {
                     PicWeixinButton cBtn = (PicWeixinButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof LocationSelectButton) {
                     LocationSelectButton cBtn = (LocationSelectButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("key", cBtn.getKey());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("key", cBtn.getKey());
                 } else if (btn instanceof MediaIdButton) {
                     MediaIdButton cBtn = (MediaIdButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("media_id", cBtn.getMedia_Id());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("media_id", cBtn.getMedia_Id());
                 } else if (btn instanceof ViewLimitedButton) {
                     ViewLimitedButton cBtn = (ViewLimitedButton) btn;
-                    btnJson.put("type", cBtn.getType());
-                    btnJson.put("media_id", cBtn.getMedia_Id());
+                    btnJson.addProperty("type", cBtn.getType());
+                    btnJson.addProperty("media_id", cBtn.getMedia_Id());
                 }
                 //设置子菜单信息
-                JSONArray subButtonArray = new JSONArray();
+                JsonArray subButtonArray = new JsonArray();
                 for (SingleButton subBtn : subButton) {
-                    JSONObject subBtnJson = new JSONObject();
-                    subBtnJson.put("name", subBtn.getName());
+                    JsonObject subBtnJson = new JsonObject();
+                    subBtnJson.addProperty("name", subBtn.getName());
                     if (subBtn instanceof ViewButton) {
                         ViewButton cBtn = (ViewButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("url", cBtn.getUrl());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("url", cBtn.getUrl());
                     } else if (subBtn instanceof ClickButton) {
                         ClickButton cBtn = (ClickButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof ScancodePushButton) {
                         ScancodePushButton cBtn = (ScancodePushButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof ScancodeWaitMsgButton) {
                         ScancodeWaitMsgButton cBtn = (ScancodeWaitMsgButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof PicSysPhotoButton) {
                         PicSysPhotoButton cBtn = (PicSysPhotoButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof PicPhotoOrAlbumButton) {
                         PicPhotoOrAlbumButton cBtn = (PicPhotoOrAlbumButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof PicWeixinButton) {
                         PicWeixinButton cBtn = (PicWeixinButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof LocationSelectButton) {
                         LocationSelectButton cBtn = (LocationSelectButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("key", cBtn.getKey());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("key", cBtn.getKey());
                     } else if (subBtn instanceof MediaIdButton) {
                         MediaIdButton cBtn = (MediaIdButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("media_id", cBtn.getMedia_Id());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("media_id", cBtn.getMedia_Id());
                     } else if (subBtn instanceof ViewLimitedButton) {
                         ViewLimitedButton cBtn = (ViewLimitedButton) subBtn;
-                        subBtnJson.put("type", cBtn.getType());
-                        subBtnJson.put("media_id", cBtn.getMedia_Id());
+                        subBtnJson.addProperty("type", cBtn.getType());
+                        subBtnJson.addProperty("media_id", cBtn.getMedia_Id());
                     }
                     subButtonArray.add(subBtnJson);
                 }
-                btnJson.put("sub_button", subButtonArray);
+                btnJson.add("sub_button", subButtonArray);
                 buttonArray.add(btnJson);
             }
         }
-        buttonJson.put("button", buttonArray);
+        buttonJson.add("button", buttonArray);
         //返回创建JSON BODY
         return buttonJson;
     }

@@ -19,7 +19,7 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
@@ -55,7 +55,7 @@ public class JsSdkComponent extends AbstractComponent {
         //调用获取jsapi_ticket接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + weixin.getToken().getAccess_token() + "&type=jsapi");
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         //成功返回如下JSON:
         //{"errcode":0,"errmsg":"ok","ticket":"bxLdikRXVbTPdHSM05e5u5sUoXNKd8-41ZO3MhKoyN5OfkWITDGgnr2fwJ0m9E8NYzWKVZvdVtaUgWvsdshFKA","expires_in":7200}
         if (jsonObj != null) {
@@ -65,9 +65,9 @@ public class JsSdkComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
-                return new Ticket(TicketType.JSAPI, jsonObj.getString("ticket"), jsonObj.getIntValue("expires_in"));
+                return new Ticket(TicketType.JSAPI, jsonObj.get("ticket").getAsString(), jsonObj.get("expires_in").getAsInt());
             }
         }
         return null;

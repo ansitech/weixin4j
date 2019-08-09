@@ -19,8 +19,11 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.weixin4j.Configuration;
@@ -62,7 +65,7 @@ public class BaseComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/token" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             throw new WeixinException(getCause(-1));
         }
@@ -72,10 +75,10 @@ public class BaseComponent extends AbstractComponent {
         Object errcode = jsonObj.get("errcode");
         if (errcode != null) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
         //设置凭证，设置accessToken和过期时间
-        return (Token) JSONObject.toJavaObject(jsonObj, Token.class);
+        return new Gson().fromJson(jsonObj, Token.class);
     }
 
     /**
@@ -89,24 +92,24 @@ public class BaseComponent extends AbstractComponent {
         if (StringUtils.isEmpty(long_url)) {
             throw new IllegalStateException("long_url can not be null or empty");
         }
-        JSONObject postJson = new JSONObject();
-        postJson.put("action", "long2short");
-        postJson.put("long_url", long_url);
+        JsonObject postJson = new JsonObject();
+        postJson.addProperty("action", "long2short");
+        postJson.addProperty("long_url", long_url);
 
         HttpsClient http = new HttpsClient();
         //调用创建Tick的access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/shorturl?access_token=" + weixin.getToken().getAccess_token(), postJson);
         //根据请求结果判定，返回结果
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             throw new WeixinException(getCause(-1));
         }
         Object errcode = jsonObj.get("errcode");
         if (errcode != null && !errcode.toString().equals("0")) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         } else {
-            return jsonObj.getString("short_url");
+            return jsonObj.get("short_url").getAsString();
         }
     }
 
@@ -122,7 +125,7 @@ public class BaseComponent extends AbstractComponent {
         //调用获取微信服务器IP接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=" + weixin.getToken().getAccess_token());
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         //成功返回如下JSON:
         //{"ip_list":["127.0.0.1","127.0.0.1"]}
         if (jsonObj != null) {
@@ -132,12 +135,12 @@ public class BaseComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
-                JSONArray ipList = jsonObj.getJSONArray("ip_list");
+                JsonArray ipList = jsonObj.getAsJsonArray("ip_list");
                 if (ipList != null) {
-                    //转换为List
-                    List ips = ipList.subList(0, ipList.size());
+                    //转换为List List ips = ipList.subList(0, ipList.size());
+                    List ips = new Gson().fromJson(ipList, ArrayList.class);
                     return (List<String>) ips;
                 }
             }

@@ -19,12 +19,14 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
 import org.weixin4j.WeixinException;
@@ -58,7 +60,7 @@ public class FileComponent extends AbstractComponent {
             HttpClient http = new HttpClient();
             //上传素材，返回JSON数据包
             String jsonStr = http.upload("http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=" + weixin.getToken().getAccess_token() + "&type=" + mediaType, file);
-            JSONObject jsonObj = JSONObject.parseObject(jsonStr);
+            JsonObject jsonObj = new JsonParser().parse(jsonStr).getAsJsonObject();
             if (jsonObj != null) {
                 if (Configuration.isDebug()) {
                     System.out.println("上传多媒体文件返回json：" + jsonObj.toString());
@@ -66,10 +68,10 @@ public class FileComponent extends AbstractComponent {
                 Object errcode = jsonObj.get("errcode");
                 if (errcode != null && !errcode.toString().equals("0")) {
                     //返回异常信息
-                    throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                    throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
                 } else {
                     //返回多媒体文件id
-                    return jsonObj.getString("media_id");
+                    return jsonObj.get("media_id").getAsString();
                 }
             }
             return null;

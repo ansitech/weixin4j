@@ -19,7 +19,7 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import org.weixin4j.Configuration;
 import org.weixin4j.model.menu.Menu;
 import org.weixin4j.Weixin;
@@ -53,9 +53,9 @@ public class MenuComponent extends AbstractComponent {
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
-        Response res = http.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + weixin.getToken().getAccess_token(), menu.toJSONObject());
+        Response res = http.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + weixin.getToken().getAccess_token(), menu.toJsonObject());
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/menu/create返回json：" + jsonObj.toString());
@@ -63,7 +63,7 @@ public class MenuComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }
@@ -80,7 +80,7 @@ public class MenuComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=" + weixin.getToken().getAccess_token(), null);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/menu/get返回json：" + jsonObj.toString());
@@ -88,7 +88,7 @@ public class MenuComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
             //返回自定义菜单对象
             return new Menu(jsonObj);
@@ -108,7 +108,7 @@ public class MenuComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + weixin.getToken().getAccess_token());
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/menu/delete返回json：" + jsonObj.toString());
@@ -116,7 +116,7 @@ public class MenuComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }

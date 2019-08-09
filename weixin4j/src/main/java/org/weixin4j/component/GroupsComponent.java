@@ -19,10 +19,12 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
 import org.weixin4j.WeixinException;
@@ -55,16 +57,16 @@ public class GroupsComponent extends AbstractComponent {
             throw new IllegalStateException("name can not be null or empty");
         }
         //拼接参数
-        JSONObject postGroup = new JSONObject();
-        JSONObject postName = new JSONObject();
-        postName.put("name", name);
-        postGroup.put("group", postName);
+        JsonObject postGroup = new JsonObject();
+        JsonObject postName = new JsonObject();
+        postName.addProperty("name", name);
+        postGroup.add("group", postName);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/create?access_token=" + weixin.getToken().getAccess_token(), postGroup);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         Group group = null;
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
@@ -73,10 +75,10 @@ public class GroupsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
-            JSONObject jsonGroup = jsonObj.getJSONObject("group");
-            group = JSONObject.toJavaObject(jsonGroup, Group.class);
+            JsonObject jsonGroup = jsonObj.get("group").getAsJsonObject();
+            group = new Gson().fromJson(jsonGroup, Group.class);
         }
         return group;
     }
@@ -97,7 +99,7 @@ public class GroupsComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/get?access_token=" + weixin.getToken().getAccess_token(), null);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("getGroups返回json：" + jsonObj.toString());
@@ -105,13 +107,13 @@ public class GroupsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
             //获取分组列表
-            JSONArray groups = jsonObj.getJSONArray("groups");
+            JsonArray groups = jsonObj.getAsJsonArray("groups");
             for (int i = 0; i < groups.size(); i++) {
-                JSONObject jsonGroup = groups.getJSONObject(i);
-                Group group = (Group) JSONObject.toJavaObject(jsonGroup, Group.class);
+                JsonObject jsonGroup = groups.get(i).getAsJsonObject();
+                Group group = new Gson().fromJson(jsonGroup, Group.class);
                 groupList.add(group);
             }
         }
@@ -135,14 +137,14 @@ public class GroupsComponent extends AbstractComponent {
         }
         int groupId = -1;
         //拼接参数
-        JSONObject postParam = new JSONObject();
-        postParam.put("openid", openid);
+        JsonObject postParam = new JsonObject();
+        postParam.addProperty("openid", openid);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/getid?access_token=" + weixin.getToken().getAccess_token(), postParam);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("getGroupId返回json：" + jsonObj.toString());
@@ -150,10 +152,10 @@ public class GroupsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
             //获取成功返回分组Id
-            groupId = jsonObj.getIntValue("groupid");
+            groupId = jsonObj.get("groupid").getAsInt();
         }
         return groupId;
     }
@@ -174,17 +176,17 @@ public class GroupsComponent extends AbstractComponent {
             throw new IllegalStateException("name is null!");
         }
         //拼接参数
-        JSONObject postGroup = new JSONObject();
-        JSONObject postName = new JSONObject();
-        postName.put("id", id);
-        postName.put("name", name);
-        postGroup.put("group", postName);
+        JsonObject postGroup = new JsonObject();
+        JsonObject postName = new JsonObject();
+        postName.addProperty("id", id);
+        postName.addProperty("name", name);
+        postGroup.add("group", postName);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/update?access_token=" + weixin.getToken().getAccess_token(), postGroup);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/groups/update返回json：" + jsonObj.toString());
@@ -192,7 +194,7 @@ public class GroupsComponent extends AbstractComponent {
             //判断是否修改成功
             //正常时返回 {"errcode": 0, "errmsg": "ok"}
             //错误时返回 示例：{"errcode":40013,"errmsg":"invalid appid"}
-            int errcode = jsonObj.getIntValue("errcode");
+            int errcode = jsonObj.get("errcode").getAsInt();
             //登录成功，设置accessToken和过期时间
             if (errcode != 0) {
                 //返回异常信息
@@ -209,16 +211,16 @@ public class GroupsComponent extends AbstractComponent {
      */
     public void delete(int groupId) throws WeixinException {
         //拼接参数
-        JSONObject postParam = new JSONObject();
-        JSONObject group = new JSONObject();
-        group.put("id", groupId);
-        postParam.put("group", group);
+        JsonObject postParam = new JsonObject();
+        JsonObject group = new JsonObject();
+        group.addProperty("id", groupId);
+        postParam.add("group", group);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/delete?access_token=" + weixin.getToken().getAccess_token(), postParam);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/groups/delete返回json：" + jsonObj.toString());
@@ -226,7 +228,7 @@ public class GroupsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }
@@ -247,15 +249,15 @@ public class GroupsComponent extends AbstractComponent {
             throw new IllegalStateException("to_groupid can not <= 0!");
         }
         //拼接参数
-        JSONObject postParam = new JSONObject();
-        postParam.put("openid", openid);
-        postParam.put("to_groupid", to_groupid);
+        JsonObject postParam = new JsonObject();
+        postParam.addProperty("openid", openid);
+        postParam.addProperty("to_groupid", to_groupid);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用获取access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/groups/members/update?access_token=" + weixin.getToken().getAccess_token(), postParam);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/groups/members/update返回json：" + jsonObj.toString());
@@ -263,7 +265,7 @@ public class GroupsComponent extends AbstractComponent {
             //判断是否修改成功
             //正常时返回 {"errcode": 0, "errmsg": "ok"}
             //错误时返回 示例：{"errcode":40013,"errmsg":"invalid appid"}
-            int errcode = jsonObj.getIntValue("errcode");
+            int errcode = jsonObj.get("errcode").getAsInt();
             //登录成功，设置accessToken和过期时间
             if (errcode != 0) {
                 //返回异常信息

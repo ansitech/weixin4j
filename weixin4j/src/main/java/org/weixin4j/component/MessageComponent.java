@@ -19,8 +19,11 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.weixin4j.Configuration;
 import org.weixin4j.Weixin;
 import org.weixin4j.WeixinException;
@@ -52,17 +55,17 @@ public class MessageComponent extends AbstractComponent {
      * @throws org.weixin4j.WeixinException
      */
     public String massSendContent(String[] openids, String txtContent) throws WeixinException {
-        JSONObject json = new JSONObject();
-        JSONObject text = new JSONObject();
-        text.put("content", txtContent);
-        json.put("touser", openids);
-        json.put("text", text);
-        json.put("msgtype", "text");
+        JsonObject json = new JsonObject();
+        JsonObject text = new JsonObject();
+        text.addProperty("content", txtContent);
+        json.add("touser", new JsonParser().parse(new Gson().toJson(openids)).getAsJsonArray());
+        json.add("text", text);
+        json.addProperty("msgtype", "text");
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("群发文本消息返回json：" + jsonObj.toString());
@@ -70,10 +73,10 @@ public class MessageComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
                 //返回群发消息id
-                return jsonObj.getString("msg_id");
+                return jsonObj.get("msg_id").getAsString();
             }
         }
         return null;
@@ -88,17 +91,17 @@ public class MessageComponent extends AbstractComponent {
      * @throws WeixinException
      */
     public String massSendNews(String[] openids, String mediaId) throws WeixinException {
-        JSONObject json = new JSONObject();
-        JSONObject media_id = new JSONObject();
-        media_id.put("media_id", mediaId);
-        json.put("touser", openids);
-        json.put("mpnews", media_id);
-        json.put("msgtype", "mpnews");
+        JsonObject json = new JsonObject();
+        JsonObject media_id = new JsonObject();
+        media_id.addProperty("media_id", mediaId);
+        json.add("touser", new JsonParser().parse(new Gson().toJson(openids)).getAsJsonArray());
+        json.add("mpnews", media_id);
+        json.addProperty("msgtype", "mpnews");
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/message/mass/send返回json：" + jsonObj.toString());
@@ -106,10 +109,10 @@ public class MessageComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
                 //返回群发图文id
-                return jsonObj.getString("msg_id");
+                return jsonObj.get("msg_id").getAsString();
             }
         }
         return null;
@@ -123,17 +126,17 @@ public class MessageComponent extends AbstractComponent {
      * @throws org.weixin4j.WeixinException
      */
     public void customSendContent(String openid, String txtContent) throws WeixinException {
-        JSONObject json = new JSONObject();
-        JSONObject text = new JSONObject();
-        text.put("content", txtContent);
-        json.put("touser", openid);
-        json.put("text", text);
-        json.put("msgtype", "text");
+        JsonObject json = new JsonObject();
+        JsonObject text = new JsonObject();
+        text.addProperty("content", txtContent);
+        json.addProperty("touser", openid);
+        json.add("text", text);
+        json.addProperty("msgtype", "text");
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("customSendContent返回json：" + jsonObj.toString());
@@ -141,7 +144,7 @@ public class MessageComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }
@@ -154,17 +157,17 @@ public class MessageComponent extends AbstractComponent {
      * @throws org.weixin4j.WeixinException
      */
     public void customSendNews(String openid, List<Articles> articles) throws WeixinException {
-        JSONObject json = new JSONObject();
-        json.put("touser", openid);
-        json.put("msgtype", "news");
-        JSONObject news = new JSONObject();
-        news.put("articles", articles);
-        json.put("news", news);
+        JsonObject json = new JsonObject();
+        json.addProperty("touser", openid);
+        json.addProperty("msgtype", "news");
+        JsonObject news = new JsonObject();
+        json.add("articles", new JsonParser().parse(new Gson().toJson(articles)).getAsJsonArray());
+        json.add("news", news);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("customSendNews返回json：" + jsonObj.toString());
@@ -172,7 +175,7 @@ public class MessageComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }
@@ -239,33 +242,33 @@ public class MessageComponent extends AbstractComponent {
         if (datas == null || datas.isEmpty()) {
             throw new IllegalStateException("datas can not be null or empty");
         }
-        JSONObject json = new JSONObject();
-        json.put("touser", openid);
-        json.put("template_id", templateId);
+        JsonObject json = new JsonObject();
+        json.addProperty("touser", openid);
+        json.addProperty("template_id", templateId);
         //添加模板跳转链接
         if (url != null && !url.equals("")) {
-            json.put("url", url);
+            json.addProperty("url", url);
         }
         //添加小程序
         if (miniprogram != null) {
-            JSONObject program = new JSONObject();
-            program.put("appid", miniprogram.getAppid());
-            program.put("pagepath", miniprogram.getPagepath());
+            JsonObject program = new JsonObject();
+            program.addProperty("appid", miniprogram.getAppid());
+            program.addProperty("pagepath", miniprogram.getPagepath());
         }
         //添加模板数据
-        JSONObject data = new JSONObject();
+        JsonObject data = new JsonObject();
         for (TemplateData templateData : datas) {
-            JSONObject dataContent = new JSONObject();
-            dataContent.put("value", templateData.getValue());
-            dataContent.put("color", templateData.getColor());
-            data.put(templateData.getKey(), dataContent);
+            JsonObject dataContent = new JsonObject();
+            dataContent.addProperty("value", templateData.getValue());
+            dataContent.addProperty("color", templateData.getColor());
+            data.add(templateData.getKey(), dataContent);
         }
-        json.put("data", data);
+        json.add("data", data);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + weixin.getToken().getAccess_token(), json);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("sendTemplateMessage返回json：" + jsonObj.toString());
@@ -273,7 +276,7 @@ public class MessageComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
         }
     }

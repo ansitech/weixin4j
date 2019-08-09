@@ -19,7 +19,8 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.weixin4j.model.sns.SnsAccessToken;
 import org.weixin4j.http.Response;
 import java.io.UnsupportedEncodingException;
@@ -134,7 +135,7 @@ public class SnsComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/sns/oauth2/access_token" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj == null) {
             return null;
         }
@@ -144,7 +145,7 @@ public class SnsComponent extends AbstractComponent {
         Object errcode = jsonObj.get("errcode");
         if (errcode != null) {
             //返回异常信息
-            throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+            throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
         return new SnsAccessToken(jsonObj);
     }
@@ -172,12 +173,12 @@ public class SnsComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/sns/auth" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("validateAccessToken返回json：" + jsonObj.toString());
             }
-            return jsonObj.getIntValue("errcode") == 0;
+            return jsonObj.get("errcode").getAsInt() == 0;
         }
         return false;
     }
@@ -201,7 +202,7 @@ public class SnsComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/sns/oauth2/refresh_token" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("refreshToken返回json：" + jsonObj.toString());
@@ -209,7 +210,7 @@ public class SnsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
             //判断是否登录成功，并判断过期时间
             Object obj = jsonObj.get("access_token");
@@ -280,7 +281,7 @@ public class SnsComponent extends AbstractComponent {
         //调用获取access_token接口
         Response res = http.get("https://api.weixin.qq.com/sns/userinfo" + param);
         //根据请求结果判定，是否验证成功
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("getSnsUser返回json：" + jsonObj.toString());
@@ -288,10 +289,10 @@ public class SnsComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             }
             //设置公众号信息
-            user = (SnsUser) JSONObject.toJavaObject(jsonObj, SnsUser.class);
+            user = new Gson().fromJson(jsonObj, SnsUser.class);
         }
         return user;
     }

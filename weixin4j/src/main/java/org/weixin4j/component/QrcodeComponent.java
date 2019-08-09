@@ -19,12 +19,14 @@
  */
 package org.weixin4j.component;
 
-import com.alibaba.fastjson.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.weixin4j.http.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -99,26 +101,26 @@ public class QrcodeComponent extends AbstractComponent {
             default:
                 throw new IllegalStateException("场景类型错误");
         }
-        JSONObject ticketJson = new JSONObject();
+        JsonObject ticketJson = new JsonObject();
         if (qrcodeType.equals(QrcodeType.QR_SCENE) || qrcodeType.equals(QrcodeType.QR_STR_SCENE)) {
             //临时二维码过期时间
-            ticketJson.put("expire_seconds", expire_seconds);
+            ticketJson.addProperty("expire_seconds", expire_seconds);
         }
         //二维码类型
-        ticketJson.put("action_name", qrcodeType.toString());
+        ticketJson.addProperty("action_name", qrcodeType.toString());
 
-        JSONObject actionInfo = new JSONObject();
-        JSONObject scene = new JSONObject();
-        scene.put("scene_id", scene_id);
-        actionInfo.put("scene", scene);
+        JsonObject actionInfo = new JsonObject();
+        JsonObject scene = new JsonObject();
+        scene.addProperty("scene_id", scene_id);
+        actionInfo.add("scene", scene);
         //二维码详细信息
-        ticketJson.put("action_info", actionInfo);
+        ticketJson.add("action_info", actionInfo);
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //调用创建Tick的access_token接口
         Response res = http.post("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + weixin.getToken().getAccess_token(), ticketJson);
         //根据请求结果判定，返回结果
-        JSONObject jsonObj = res.asJSONObject();
+        JsonObject jsonObj = res.asJsonObject();
         if (jsonObj != null) {
             if (Configuration.isDebug()) {
                 System.out.println("/qrcode/create返回json：" + jsonObj.toString());
@@ -126,9 +128,9 @@ public class QrcodeComponent extends AbstractComponent {
             Object errcode = jsonObj.get("errcode");
             if (errcode != null && !errcode.toString().equals("0")) {
                 //返回异常信息
-                throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
+                throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
             } else {
-                return JSONObject.toJavaObject(jsonObj, Qrcode.class);
+                return new Gson().fromJson(jsonObj, Qrcode.class);
             }
         }
         return null;

@@ -19,8 +19,9 @@
  */
 package org.weixin4j.http;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import org.weixin4j.WeixinException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -123,11 +124,11 @@ public class Response {
     /**
      * 将输出流转换为JSON对象
      *
-     * @return JSONObject对象
+     * @return JsonObject对象
      * @throws org.weixin4j.WeixinException
      */
-    public JSONObject asJSONObject() throws WeixinException {
-        return JSONObject.parseObject(asString());
+    public JsonObject asJsonObject() throws WeixinException {
+        return new JsonParser().parse(asString()).getAsJsonObject();
     }
 
     /**
@@ -136,8 +137,8 @@ public class Response {
      * @return JSONArray对象
      * @throws org.weixin4j.WeixinException
      */
-    public JSONArray asJSONArray() throws WeixinException {
-        return JSONArray.parseArray(asString());
+    public JsonArray asJsonArray() throws WeixinException {
+        return new JsonParser().parse(asString()).getAsJsonArray();
     }
 
     /**

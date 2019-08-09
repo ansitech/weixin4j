@@ -19,7 +19,7 @@
  */
 package org.weixin4j.model.sns;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import org.weixin4j.WeixinException;
 import java.util.Date;
 import org.weixin4j.http.Response;
@@ -50,7 +50,7 @@ public final class SnsAccessToken {
      * @throws WeixinException
      */
     public SnsAccessToken(Response response) throws WeixinException {
-        this(response.asJSONObject());
+        this(response.asJsonObject());
     }
 
     /**
@@ -63,12 +63,12 @@ public final class SnsAccessToken {
      * @param jsonObj JSON数据包
      * @throws WeixinException
      */
-    public SnsAccessToken(JSONObject jsonObj) throws WeixinException {
-        this.access_token = jsonObj.getString("access_token");
-        this.expires_in = jsonObj.getIntValue("expires_in");
-        this.refresh_token = jsonObj.getString("refresh_token");
-        this.openid = jsonObj.getString("openid");
-        this.scope = jsonObj.getString("scope");
+    public SnsAccessToken(JsonObject jsonObj) throws WeixinException {
+        this.access_token = jsonObj.get("access_token").getAsString();
+        this.expires_in = jsonObj.get("expires_in").getAsInt();
+        this.refresh_token = jsonObj.get("refresh_token").getAsString();
+        this.openid = jsonObj.get("openid").getAsString();
+        this.scope = jsonObj.get("scope").getAsString();
         //设置下次过期时间 = 当前时间 + (凭证有效时间(秒) * 1000)
         this.exprexpired_time = new Date().getTime() + (this.expires_in * 1000);
     }
