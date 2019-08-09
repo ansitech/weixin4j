@@ -78,7 +78,7 @@ public class BaseComponent extends AbstractComponent {
             throw new WeixinException(getCause(jsonObj.get("errcode").getAsInt()));
         }
         //设置凭证，设置accessToken和过期时间
-        return new Gson().fromJson(jsonObj, Token.class);
+        return new Token(jsonObj);
     }
 
     /**
