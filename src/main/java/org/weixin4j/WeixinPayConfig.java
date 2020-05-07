@@ -86,7 +86,7 @@ public class WeixinPayConfig {
      * 支付密钥，官方已改名，请调用getMchKey()方法
      *
      * <p>
-     * 账户设置-->API安全-->密钥设置</p>
+     * 账户设置--API安全--密钥设置</p>
      *
      * @return 支付密钥
      * @since 0.1.3
