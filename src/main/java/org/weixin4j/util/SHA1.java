@@ -20,6 +20,7 @@
 package org.weixin4j.util;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * SHA1算法
@@ -56,7 +57,7 @@ public final class SHA1 {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
             messageDigest.update(str.getBytes());
             return getFormattedText(messageDigest.digest());
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

@@ -20,6 +20,7 @@
 package org.weixin4j.util;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.weixin4j.misc.BASE64Encoder;
 
 /**
@@ -47,7 +48,7 @@ public class MD5 {
             byte[] digest = md5.digest(b);
             String newstr = base64en.encode(digest);
             return newstr;
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
