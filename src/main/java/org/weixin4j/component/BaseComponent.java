@@ -32,7 +32,7 @@ import org.weixin4j.model.base.Token;
 
 /**
  * 基础组件
- * 
+ *
  * @author yangqisheng
  * @since 0.1.0
  */
@@ -75,7 +75,8 @@ public class BaseComponent extends AbstractComponent {
             throw new WeixinException(getCause(jsonObj.getIntValue("errcode")));
         }
         //设置凭证，设置accessToken和过期时间
-        return (Token) JSONObject.toJavaObject(jsonObj, Token.class);
+        //update at 0.1.6 因为 fastjson 1.2.68 直接转换JSON不走set方法
+        return new Token(jsonObj);
     }
 
     /**
