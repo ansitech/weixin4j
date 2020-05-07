@@ -74,36 +74,15 @@ public class SignUtil {
     }
 
     /**
-     * 支付签名（paySign）生成方法
-     *
-     * 旧版
-     *
-     * @param M 待签名参数
-     * @return 签名paySign
-     */
-    public static String getOldSign(Map<String, String> M) {
-        //1.1 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）
-        Map<String, String> sortParams = MapUtil.sortAsc(M);
-        //1.2 使用URL键值对的格式拼接成字符串
-        String string1 = MapUtil.mapJoin(sortParams, false);
-        try {
-            //2 对string1进行sha1签名
-            return DigestUtils.sha1Hex(string1.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-        }
-        return "";
-    }
-
-    /**
      * getBrandWCPayRequest签名
      *
-     * @param M 待签名参数
-     * @param paternerKey 商户密钥
+     * @param map 待签名参数
+     * @param mchKey 商户密钥
      * @return 签名paySign
      */
-    public static String getSign(Map<String, String> M, String paternerKey) {
+    public static String getSign(Map<String, String> map, String mchKey) {
         //1.1 对所有待签名参数按照字段名的ASCII 码从小到大排序（字典序）
-        Map<String, String> sortParams = MapUtil.sortAsc(M);
+        Map<String, String> sortParams = MapUtil.sortAsc(map);
         //1.2 使用URL键值对的格式
         String string1 = MapUtil.mapJoin(sortParams, false);
         if (Configuration.isDebug()) {
@@ -111,7 +90,7 @@ public class SignUtil {
             System.out.println(string1);
         }
         //拼接签名字符串
-        String stringSignTemp = string1 + "&key=" + paternerKey;
+        String stringSignTemp = string1 + "&key=" + mchKey;
         if (Configuration.isDebug()) {
             System.out.println("#2.连接商户key：");
             System.out.println(stringSignTemp);

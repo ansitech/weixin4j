@@ -43,38 +43,7 @@ public class WXPay {
     private final String signature;         //jsapi授权签名
 
     /**
-     * chooseWXPay 旧版
-     *
-     * @param appId 公众号Id
-     * @param jsapi_ticket jsapi验证票据
-     * @param packages 签名参数
-     * @param url 发起请求的url地址
-     * @param paternerKey 商户密钥
-     * @param appKey 商户支付密钥
-     */
-    public WXPay(String appId, String jsapi_ticket, WXPackage packages, String url, String paternerKey, String appKey) {
-        this.appId = appId;
-        this.timestamp = System.currentTimeMillis() / 1000 + "";
-        this.nonceStr = java.util.UUID.randomUUID().toString().substring(0, 15);
-        //生成订单详情扩展字符串
-        this.packages = getPackage(packages.toMap(), paternerKey);
-        //生成jsapi授权签名
-        this.signature = SignUtil.getSignature(jsapi_ticket, this.nonceStr, this.timestamp, url);
-
-        //对提交的参数进行签名
-        Map<String, String> paySignMap = new HashMap<String, String>();
-        paySignMap.put("appid", this.appId);
-        paySignMap.put("timestamp", timestamp);
-        paySignMap.put("noncestr", this.nonceStr);
-        paySignMap.put("package", this.packages);
-        paySignMap.put("appkey", appKey);
-
-        //生成支付签名
-        this.paySign = SignUtil.getOldSign(paySignMap);
-    }
-
-    /**
-     * chooseWXPay 新版
+     * chooseWXPay
      *
      * @param appId 公众号Id
      * @param jsapi_ticket jsapi验证票据
