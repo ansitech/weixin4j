@@ -13,6 +13,37 @@
 
 ##更新日志
 
+2020年05月07日
+
+    weixin4j-v0.1.6
+    1.升级fastjson版本，1.2.31升级为1.2.68
+    2.WeixinPayConfig配置商户号字段改名partnerId改为mchId、partnerKey改为mchKey，兼容原字段
+    3.去除微信支付v2.5相关过期方法
+    4.优化base()组件获取token时因fastjson版本过高json解析无效BUG
+
+2019年07月03日
+
+    weixin4j-v0.1.5
+    1.增加自定义菜单支持创建小程序菜单
+    2.升级fastjson版本，1.2.7升级为1.2.31
+    3.增加微信支付普通服务商下单接口
+    4.优化部分代码格式
+
+2019年03月20日
+
+    weixin4j-v0.1.4
+    1.修复模板消息支持添加小程序
+    2.优化媒体文件下载接口
+    3.增加新增临时素材接口
+    4.优化部分代码格式
+
+2018年08月16日
+
+    weixin4j-v0.1.3
+    1.增加WeixinConfig对象、WeixinPayConfig对象
+    2.增加WeixinFactory对象及DefaultWeixinFactory
+    3.优化WeixinBuilder支持传WeixinConfig、WeixinPayConfig
+
 2018年08月09日
 
     weixin4j-v0.1.2
