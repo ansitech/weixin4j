@@ -114,11 +114,27 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
         weixinConfig.setOauthUrl(Configuration.getProperty("weixin4j.oauth.url"));
         weixinConfig.setApiDomain(Configuration.getProperty("weixin4j.api.domain"));
         weixinPayConfig = new WeixinPayConfig();
+        weixinPayConfig.setAppId(appId);
         weixinPayConfig.setPartnerId(Configuration.getProperty("weixin4j.pay.partner.id"));
         weixinPayConfig.setPartnerKey(Configuration.getProperty("weixin4j.pay.partner.key"));
         weixinPayConfig.setNotifyUrl(Configuration.getProperty("weixin4j.pay.notify_url"));
+        weixinPayConfig.setMchId(Configuration.getProperty("weixin4j.pay.mch.id", Configuration.getProperty("weixin4j.pay.partner.id")));
+        weixinPayConfig.setMchKey(Configuration.getProperty("weixin4j.pay.mch.key", Configuration.getProperty("weixin4j.pay.partner.key")));
         weixinPayConfig.setCertPath(Configuration.getProperty("weixin4j.http.cert.path"));
         weixinPayConfig.setCertSecret(Configuration.getProperty("weixin4j.http.cert.secret"));
+        if (null == this.weixinPayConfig.getAppId() || "".equals(this.weixinPayConfig.getAppId())) {
+            this.weixinPayConfig.setAppId(weixinConfig.getAppid());
+        }
+        if (null == this.weixinPayConfig.getMchId() || "".equals(this.weixinPayConfig.getMchId())) {
+            this.weixinPayConfig.setMchId(weixinPayConfig.getPartnerId());
+        }
+        if (null == this.weixinPayConfig.getMchKey() || "".equals(this.weixinPayConfig.getMchKey())) {
+            this.weixinPayConfig.setMchKey(weixinPayConfig.getPartnerKey());
+        }
+        //兼容证书密钥未设置
+        if (null == this.weixinPayConfig.getCertSecret() || "".equals(this.weixinPayConfig.getCertSecret())) {
+            weixinPayConfig.setCertSecret(weixinPayConfig.getMchId());
+        }
     }
 
     /**
@@ -149,6 +165,22 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
         weixinConfig.setOauthUrl(Configuration.getProperty("weixin4j.oauth.url"));
         weixinConfig.setApiDomain(Configuration.getProperty("weixin4j.api.domain"));
         this.weixinPayConfig = weixinPayConfig;
+        //兼容0.1.6以前的版本
+        if (this.weixinPayConfig != null) {
+            if (null == this.weixinPayConfig.getAppId() || "".equals(this.weixinPayConfig.getAppId())) {
+                this.weixinPayConfig.setAppId(weixinConfig.getAppid());
+            }
+            if (null == this.weixinPayConfig.getMchId() || "".equals(this.weixinPayConfig.getMchId())) {
+                this.weixinPayConfig.setMchId(weixinPayConfig.getPartnerId());
+            }
+            if (null == this.weixinPayConfig.getMchKey() || "".equals(this.weixinPayConfig.getMchKey())) {
+                this.weixinPayConfig.setMchKey(weixinPayConfig.getPartnerKey());
+            }
+            //兼容证书密钥未设置
+            if (null == this.weixinPayConfig.getCertSecret() || "".equals(this.weixinPayConfig.getCertSecret())) {
+                weixinPayConfig.setCertSecret(weixinPayConfig.getMchId());
+            }
+        }
     }
 
     /**
@@ -163,6 +195,22 @@ public class Weixin extends WeixinSupport implements java.io.Serializable {
         this.secret = weixinConfig.getSecret();
         this.weixinConfig = weixinConfig;
         this.weixinPayConfig = weixinPayConfig;
+        //兼容0.1.6以前的版本
+        if (this.weixinPayConfig != null) {
+            if (null == this.weixinPayConfig.getAppId() || "".equals(this.weixinPayConfig.getAppId())) {
+                this.weixinPayConfig.setAppId(weixinConfig.getAppid());
+            }
+            if (null == this.weixinPayConfig.getMchId() || "".equals(this.weixinPayConfig.getMchId())) {
+                this.weixinPayConfig.setMchId(weixinPayConfig.getPartnerId());
+            }
+            if (null == this.weixinPayConfig.getMchKey() || "".equals(this.weixinPayConfig.getMchKey())) {
+                this.weixinPayConfig.setMchKey(weixinPayConfig.getPartnerKey());
+            }
+            //兼容证书密钥未设置
+            if (null == this.weixinPayConfig.getCertSecret() || "".equals(this.weixinPayConfig.getCertSecret())) {
+                weixinPayConfig.setCertSecret(weixinPayConfig.getMchId());
+            }
+        }
     }
 
     public String getAppId() {

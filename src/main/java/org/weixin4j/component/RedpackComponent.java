@@ -54,23 +54,40 @@ public class RedpackComponent extends AbstractComponent {
      * @throws org.weixin4j.WeixinException 微信操作异常
      */
     public SendRedPackResult sendRedPack(SendRedPack sendRedPack) throws WeixinException {
-        String partnerId = this.weixin.getWeixinPayConfig().getPartnerId();
         String certPath = this.weixin.getWeixinPayConfig().getCertPath();
         String certSecret = this.weixin.getWeixinPayConfig().getCertSecret();
-        return sendRedPack(sendRedPack, partnerId, certPath, certSecret);
+        return sendRedPack(sendRedPack, certPath, certSecret);
+    }
+
+    /**
+     * 发送现金红包
+     *
+     * <p>
+     * mchId字段无效，传或不传已不影响结果
+     * </p>
+     *
+     * @param sendRedPack 现金红包对象
+     * @param mchId 商户号
+     * @param certPath 证书路径
+     * @param certSecret 证书密钥
+     * @return 发送现金红包返回结果对象
+     * @throws org.weixin4j.WeixinException 微信操作异常
+     */
+    @Deprecated
+    public SendRedPackResult sendRedPack(SendRedPack sendRedPack, String mchId, String certPath, String certSecret) throws WeixinException {
+        return sendRedPack(sendRedPack, certPath, certSecret);
     }
 
     /**
      * 发送现金红包
      *
      * @param sendRedPack 现金红包对象
-     * @param partnerId 商户ID
      * @param certPath 证书路径
      * @param certSecret 证书密钥
      * @return 发送现金红包返回结果对象
      * @throws org.weixin4j.WeixinException 微信操作异常
      */
-    public SendRedPackResult sendRedPack(SendRedPack sendRedPack, String partnerId, String certPath, String certSecret) throws WeixinException {
+    public SendRedPackResult sendRedPack(SendRedPack sendRedPack, String certPath, String certSecret) throws WeixinException {
         //将统一下单对象转成XML
         String xmlPost = sendRedPack.toXML();
         if (Configuration.isDebug()) {
@@ -79,7 +96,7 @@ public class RedpackComponent extends AbstractComponent {
         //创建请求对象
         HttpsClient http = new HttpsClient();
         //提交xml格式数据
-        Response res = http.postXml("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack", xmlPost, partnerId, certPath, certSecret);
+        Response res = http.postXml("https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack", xmlPost, certPath, certSecret);
         //获取微信平台下单接口返回数据
         String xmlResult = res.asString();
         try {
